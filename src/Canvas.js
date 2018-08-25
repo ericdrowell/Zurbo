@@ -16,8 +16,8 @@ var createCanvas = function(className) {
   canvas.className = className;
   canvas.style.display = 'inline-block';
   canvas.style.position = 'absolute';
-  canvas.width = 1000;
-  canvas.height = 666;
+  canvas.width = Game_viewportWidth;
+  canvas.height = Game_viewportHeight;
   canvas.style.width = '1000px';
   canvas.style.height = '666px';
   return canvas;
