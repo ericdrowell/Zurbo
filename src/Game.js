@@ -5,10 +5,18 @@ var Game_viewportHeight = 666;
 var Game_init = function() {
   Game_setupDom();
   
+
   Canvas_init();
+  SoundEffects_init();
   Zurbo_init();
 
+  Level1_render();
   Game_render();
+
+  document.body.addEventListener('click', function() {
+    SoundEffects_play('monster-jump');
+  });
+  
 };
 
 var Game_setupDom = function() {
@@ -26,14 +34,14 @@ var Game_setupDom = function() {
 };
 
 var Game_render = function() {
-  Canvas_backgroundContext.clearRect(0, 0, Game_viewportWidth, Game_viewportHeight);
-  Canvas_foregroundContext.clearRect(0, 0, Game_viewportWidth, Game_viewportHeight);
+  Canvas_sceneContext.clearRect(0, 0, Game_viewportWidth, Game_viewportHeight);
+
+  Canvas_sceneContext.drawImage(Canvas_backgroundCanvas, 0, 0);
+  Canvas_sceneContext.drawImage(Canvas_middlegroundCanvas, 0, 0);
 
   Zurbo_render();
 
-
-  Canvas_backgroundContext.drawImage(Canvas_foregroundCanvas, 0, 0);
-  var scene = Canvas_backgroundCanvas.toDataURL();
+  var scene = Canvas_sceneCanvas.toDataURL();
 
   Game_viewport.style.backgroundImage = 'url(' + scene + ')';
 };

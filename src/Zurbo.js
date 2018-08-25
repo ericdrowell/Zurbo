@@ -22,37 +22,34 @@ var Zurbo_render = function() {
   var zurboColor = '#ff00f6';
   var zurboHornColor = 'white';
 
-  Canvas_backgroundContext.fillStyle = 'blue';
-  Canvas_backgroundContext.fillRect(0, 0, Game_viewportWidth, Game_viewportHeight);
-
-  Canvas_foregroundContext.save();
+  Canvas_sceneContext.save();
 
   // body
-  Canvas_foregroundContext.beginPath();
-  Canvas_foregroundContext.arc(Zurbo_vm_body_x, Zurbo_vm_body_y, Zurbo_vm_body_radius, 0, Math.PI*2, false);
-  Canvas_foregroundContext.fillStyle = zurboColor;
-  Canvas_foregroundContext.fill();
+  Canvas_sceneContext.beginPath();
+  Canvas_sceneContext.arc(Zurbo_vm_body_x, Zurbo_vm_body_y, Zurbo_vm_body_radius, 0, Math.PI*2, false);
+  Canvas_sceneContext.fillStyle = zurboColor;
+  Canvas_sceneContext.fill();
 
   // head
-  Canvas_foregroundContext.translate(Zurbo_vm_body_x, Zurbo_vm_body_y);
-  Canvas_foregroundContext.rotate(Zurbo_vm_head_angle);
-  Canvas_foregroundContext.translate(0, -1 * (Zurbo_vm_body_radius + Zurbo_vm_head_radius));
+  Canvas_sceneContext.translate(Zurbo_vm_body_x, Zurbo_vm_body_y);
+  Canvas_sceneContext.rotate(Zurbo_vm_head_angle);
+  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_body_radius + Zurbo_vm_head_radius));
 
-  Canvas_foregroundContext.beginPath();
-  Canvas_foregroundContext.arc(0, 0, Zurbo_vm_head_radius, 0, Math.PI*2, false);
-  Canvas_foregroundContext.fillStyle = zurboColor;
-  Canvas_foregroundContext.fill();
+  Canvas_sceneContext.beginPath();
+  Canvas_sceneContext.arc(0, 0, Zurbo_vm_head_radius, 0, Math.PI*2, false);
+  Canvas_sceneContext.fillStyle = zurboColor;
+  Canvas_sceneContext.fill();
 
   // head horn
-  Canvas_foregroundContext.rotate(Math.PI*0.1);
-  Canvas_foregroundContext.beginPath();
-  Canvas_foregroundContext.moveTo(0, -1 * (Zurbo_vm_head_horn_length + Zurbo_vm_head_radius));
-  Canvas_foregroundContext.lineTo(-1 * Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius/2);
-  Canvas_foregroundContext.lineTo(Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius/2);
-  Canvas_foregroundContext.fillStyle = zurboHornColor;
-  Canvas_foregroundContext.fill();
+  Canvas_sceneContext.rotate(Math.PI*0.1);
+  Canvas_sceneContext.beginPath();
+  Canvas_sceneContext.moveTo(0, -1 * (Zurbo_vm_head_horn_length + Zurbo_vm_head_radius));
+  Canvas_sceneContext.lineTo(-1 * Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius/2);
+  Canvas_sceneContext.lineTo(Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius/2);
+  Canvas_sceneContext.fillStyle = zurboHornColor;
+  Canvas_sceneContext.fill();
 
-  Canvas_foregroundContext.restore();
+  Canvas_sceneContext.restore();
 
 
 };
