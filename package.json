@@ -5,8 +5,10 @@
   "license": "MIT",
   "description": "Zurbo js13k 2018 Entry",
   "scripts": {
-    "build": "npm run create-dist && npm run concat && node scripts/wrap.js && npm run uglify && node scripts/replace.js && npm run html && npm run zip",
-    "dev": "npm run create-dist && npm run concat && node scripts/wrap.js && cp ./dist/zurbo-wrapped.js ./dist/zurbo.min.js && node scripts/replace.js && npm run html",
+    "build": "npm run jshint && npm run create-dist && npm run concat && node scripts/wrap.js && npm run uglify && node scripts/replace.js && npm run html && npm run zip",
+    "dev": "npm run jshint && npm run create-dist && npm run concat && node scripts/wrap.js && cp ./dist/zurbo-wrapped.js ./dist/zurbo.min.js && node scripts/replace.js && npm run html",
+
+    "jshint": "jshint ./src/*.js",
     "create-dist": "rm -rf ./dist && mkdir ./dist",
     "uglify": "uglifyjs ./dist/zurbo-wrapped.js -m -o ./dist/zurbo.min.js",
     "concat": "concat -o ./dist/zurbo-concatenated.js ./src/*.js",
@@ -16,6 +18,7 @@
   "devDependencies": {
     "concat": "^1.0.3",
     "html-minifier": "^3.5.20",
+    "jshint": "^2.9.6",
     "uglify-js": "^3.4.8"
   }
 }
