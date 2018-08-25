@@ -6,7 +6,7 @@ fs.readFile('./dist/zurbo-concatenated.js', 'utf8', function (err, jsContent) {
 
 
 
-  var newJsContent = '(function(){' + jsContent + '})();';
+  var newJsContent = '(function(){' + jsContent + ';Game.init();})();';
 
   fs.writeFile('./dist/zurbo-wrapped.js', newJsContent, 'utf8', function (err) {
      if (err) return console.log(err);

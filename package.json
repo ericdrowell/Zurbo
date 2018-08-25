@@ -9,7 +9,7 @@
     "dev": "npm run create-dist && npm run concat && node scripts/wrap.js && cp ./dist/zurbo-wrapped.js ./dist/zurbo.min.js && node scripts/replace.js && npm run html",
     "create-dist": "rm -rf ./dist && mkdir ./dist",
     "uglify": "uglifyjs ./dist/zurbo-wrapped.js -m -o ./dist/zurbo.min.js",
-    "concat": "concat -o ./dist/zurbo-concatenated.js ./src/Game.js",
+    "concat": "concat -o ./dist/zurbo-concatenated.js ./src/*.js",
     "html": "html-minifier --collapse-whitespace ./dist/index-uncompressed.html -o ./dist/index.html",
     "zip": "mkdir ./dist/zurbo-eric-rowell-js13k-2018 && cp ./dist/index.html ./dist/zurbo-eric-rowell-js13k-2018/index.html && cd ./dist && zip -r ./zurbo-eric-rowell-js13k-2018 ./zurbo-eric-rowell-js13k-2018 && cd .. && echo ================== && ls -l ./dist/zurbo-eric-rowell-js13k-2018.zip && echo =================="
   },

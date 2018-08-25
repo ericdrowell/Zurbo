@@ -1,9 +1,5 @@
 var Game = {
   init: function() {
-    var foo = 5;
-    console.log('oh yea')
+    Zurbo.render();
   }
 };
-
-// start game
-Game.init();
