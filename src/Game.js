@@ -91,9 +91,11 @@ var Game_render = function() {
 
   Zurbo_render();
 
-  var scene = Canvas_sceneCanvas.toDataURL();
+  //Canvas_pixelate(Canvas_sceneContext, 5);
 
-  Game_viewport.style.backgroundImage = 'url(' + scene + ')';
+  var sceneUrl = Canvas_sceneCanvas.toDataURL();
+
+  Game_viewport.style.backgroundImage = 'url(' + sceneUrl + ')';
 };
 
 var Game_update = function() {

@@ -127,8 +127,8 @@ var Zurbo_render = function() {
   Canvas_sceneContext.scale(1, 0.2);
   Canvas_sceneContext.arc(0, 0, shadowRadius, 0, Math.PI*2, false);
 
-  Canvas_sceneContext.shadowBlur = 10;
-  Canvas_sceneContext.shadowColor = 'black';
+  //Canvas_sceneContext.shadowBlur = 10;
+  //Canvas_sceneContext.shadowColor = 'black';
   Canvas_sceneContext.fillStyle = 'black';
 
   Canvas_sceneContext.fill();
@@ -150,8 +150,8 @@ var Zurbo_render = function() {
   
   Canvas_sceneContext.beginPath();
   Canvas_sceneContext.arc(0, 0, Zurbo_vm_body_radius, 0, Math.PI*2, false);
-  Canvas_sceneContext.shadowBlur=30;
-  Canvas_sceneContext.shadowColor = Zurbo_bodyColor;
+  //Canvas_sceneContext.shadowBlur=30;
+  //Canvas_sceneContext.shadowColor = Zurbo_bodyColor;
   gradient = Canvas_sceneContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_body_radius);
   gradient.addColorStop(0, Zurbo_bodyColor);
   gradient.addColorStop(1, Zurbo_bodyColorDark);
@@ -175,8 +175,8 @@ var Zurbo_render = function() {
   Canvas_sceneContext.moveTo(0, -1 * (Zurbo_vm_head_horn_length + Zurbo_vm_head_radius));
   Canvas_sceneContext.lineTo(-1 * Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius + 5);
   Canvas_sceneContext.lineTo(Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius + 5);
-  Canvas_sceneContext.shadowBlur = 30;
-  Canvas_sceneContext.shadowColor = Zurbo_hornColor;
+  //Canvas_sceneContext.shadowBlur = 30;
+  //Canvas_sceneContext.shadowColor = Zurbo_hornColor;
   gradient = Canvas_sceneContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_head_radius);
   gradient.addColorStop(0, Zurbo_bodyColor);
   gradient.addColorStop(1, Zurbo_bodyColorDark);
@@ -198,8 +198,8 @@ var Zurbo_renderLeg = function(side) {
   Canvas_sceneContext.beginPath();
   Canvas_sceneContext.moveTo(0, 0);
   Canvas_sceneContext.bezierCurveTo(-40, Zurbo_vm_body_radius+Zurbo_vm_legs_length+20, 40, Zurbo_vm_body_radius+Zurbo_vm_legs_length+20, 0, 0);
-  Canvas_sceneContext.shadowBlur = 30;
-  Canvas_sceneContext.shadowColor = Zurbo_bodyColor;
+  //Canvas_sceneContext.shadowBlur = 30;
+  //Canvas_sceneContext.shadowColor = Zurbo_bodyColor;
   gradient = Canvas_sceneContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_legs_length);
   gradient.addColorStop(0, Zurbo_bodyColor);
   gradient.addColorStop(1, Zurbo_bodyColorDark);

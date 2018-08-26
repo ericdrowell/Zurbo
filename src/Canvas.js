@@ -11,20 +11,20 @@ var Canvas_sceneCanvas;
 var Canvas_sceneContext;
 
 var Canvas_init = function() {
-  Canvas_backgroundCanvas = createCanvas();
+  Canvas_backgroundCanvas = Canvas_createCanvas();
   Canvas_backgroundContext = Canvas_backgroundCanvas.getContext('2d');
 
-  Canvas_middlegroundCanvas = createCanvas();
+  Canvas_middlegroundCanvas = Canvas_createCanvas();
   Canvas_middlegroundContext = Canvas_middlegroundCanvas.getContext('2d');
 
-  Canvas_foregroundCanvas = createCanvas();
+  Canvas_foregroundCanvas = Canvas_createCanvas();
   Canvas_foregroundContext = Canvas_foregroundCanvas.getContext('2d');
 
-  Canvas_sceneCanvas = createCanvas();
+  Canvas_sceneCanvas = Canvas_createCanvas();
   Canvas_sceneContext = Canvas_sceneCanvas.getContext('2d');
 };
 
-var createCanvas = function() {
+var Canvas_createCanvas = function() {
   var canvas = document.createElement('canvas');
   canvas.style.display = 'inline-block';
   canvas.style.position = 'absolute';
@@ -35,3 +35,31 @@ var createCanvas = function() {
 
   return canvas;
 };
+
+var Canvas_pixelate = function(context, pixelation) {
+  var imageData = context.getImageData(0, 0, Game_viewportWidth, Game_viewportHeight);
+  var data = imageData.data;
+
+  for(var y = 0; y < Game_viewportHeight; y += pixelation) {
+    for(var x = 0; x < Game_viewportWidth; x += pixelation) {
+      var red = data[((Game_viewportWidth * y) + x) * 4];
+      var green = data[((Game_viewportWidth * y) + x) * 4 + 1];
+      var blue = data[((Game_viewportWidth * y) + x) * 4 + 2];
+
+      for(var n = 0; n < pixelation; n++) {
+        for(var m = 0; m < pixelation; m++) {
+          if(x + m < Game_viewportWidth) {
+            data[((Game_viewportWidth * (y + n)) + (x + m)) * 4] = red;
+            data[((Game_viewportWidth * (y + n)) + (x + m)) * 4 + 1] = green;
+            data[((Game_viewportWidth * (y + n)) + (x + m)) * 4 + 2] = blue;
+          }
+        }
+      }
+    }
+  }
+
+  // overwrite original image
+  context.putImageData(imageData, 0, 0);
+};
+
+
