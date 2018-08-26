@@ -22,7 +22,7 @@ var Zurbo_verticalVelocity = 0; // pixels / second
 var Zurbo_jumpVelocity = -800;
 
 // Zurbo can jump once off the ground, and then in the air!
-var Zurbo_jumpsLeft = 1;
+var Zurbo_jumpsLeft = 0;
 
 
 var Zurbo_init = function() {
@@ -115,15 +115,17 @@ var Zurbo_listen = function() {
 
 var Zurbo_render = function() {
   var gradient;
+  
 
 
   // shadow
+  var shadowRadius = Zurbo_vm_body_radius * 0.18 * Game_viewportHeight / (Game_viewportHeight-Zurbo_vm_body_y);
   Canvas_sceneContext.save();
   Canvas_sceneContext.beginPath();
   Canvas_sceneContext.globalAlpha = 0.2;
   Canvas_sceneContext.translate(Game_viewportWidth/2, Game_viewportHeight-70);
   Canvas_sceneContext.scale(1, 0.2);
-  Canvas_sceneContext.arc(0, 0, Zurbo_vm_body_radius*1.2, 0, Math.PI*2, false);
+  Canvas_sceneContext.arc(0, 0, shadowRadius, 0, Math.PI*2, false);
 
   Canvas_sceneContext.shadowBlur = 10;
   Canvas_sceneContext.shadowColor = 'black';
@@ -135,7 +137,7 @@ var Zurbo_render = function() {
   // legs
   Canvas_sceneContext.save();
   Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
-  Canvas_sceneContext.translate(0, -1 * Zurbo_vm_legs_length);
+  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
   Zurbo_renderLeg(-1);
   Zurbo_renderLeg(1);
   Canvas_sceneContext.restore();
@@ -143,7 +145,7 @@ var Zurbo_render = function() {
   // body
   Canvas_sceneContext.save();
   Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
-  Canvas_sceneContext.translate(0, -1 * Zurbo_vm_legs_length);
+  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
   Canvas_sceneContext.rotate(Zurbo_vm_body_angle);
   
   Canvas_sceneContext.beginPath();
@@ -224,21 +226,43 @@ var Zurbo_update = function(timeDiff) {
   }
 
   // landed on the ground
-  if (Zurbo_vm_body_y > Game_viewportHeight - 100) {
-    Zurbo_vm_body_y = Game_viewportHeight - 100;
+  if (Zurbo_vm_body_y > Game_viewportHeight - 70) {
+    Zurbo_vm_body_y = Game_viewportHeight - 70;
     Zurbo_verticalVelocity = 0;
     Zurbo_jumpsLeft = 2;
   }
 
 
   if (Zurbo_jumpsLeft === 0) {
-    Zurbo_vm_legs_angle = Math.PI * 0;
+    Zurbo_vm_legs_angle = Math.PI * 0.2;
   }
   else if (Zurbo_jumpsLeft === 1) {
-    Zurbo_vm_legs_angle = Math.PI * 0.2;
+    Zurbo_vm_legs_angle = Math.PI * 0;
   }
   else if (Zurbo_jumpsLeft === 2) {
     Zurbo_vm_legs_angle = Math.PI * 0.05;
   }
+
+  Zurbo_updateBodyAngle();
+
+
+
+
+};
+
+var Zurbo_updateBodyAngle = function() {
+  var canvasPoint = Game_mouseToCanvas({
+    x: Game_mouseX,
+    y: Game_mouseY
+  });
+
+  // angle between two points
+  // a = atan(dy/dx)
+  var bodyCenterY = Zurbo_vm_body_y - Zurbo_vm_legs_length - Zurbo_vm_body_radius;
+  var dx = 1 * (canvasPoint.x - Game_viewportWidth/2);
+  var dy = 1 * (canvasPoint.y - bodyCenterY);
+  var angle = Math.atan(dy/dx);
+
+  Zurbo_vm_body_angle = angle + (dx >= 0 ? Math.PI/2 : -1 * Math.PI/2);
 };
 
