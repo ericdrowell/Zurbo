@@ -32,6 +32,7 @@ var Zurbo_init = function() {
 var Zurbo_listen = function() {
   document.addEventListener('click', function() {
     SoundEffects_play('laser');
+    //Music_play();
   });
 
   var wDown = false;
@@ -115,8 +116,21 @@ var Zurbo_listen = function() {
 var Zurbo_render = function() {
   var gradient;
 
-  Canvas_sceneContext.save();
 
+  // shadow
+  Canvas_sceneContext.save();
+  Canvas_sceneContext.beginPath();
+  Canvas_sceneContext.globalAlpha = 0.2;
+  Canvas_sceneContext.translate(Game_viewportWidth/2, Game_viewportHeight-70);
+  Canvas_sceneContext.scale(1, 0.2);
+  Canvas_sceneContext.arc(0, 0, Zurbo_vm_body_radius*1.2, 0, Math.PI*2, false);
+
+  Canvas_sceneContext.shadowBlur = 10;
+  Canvas_sceneContext.shadowColor = 'black';
+  Canvas_sceneContext.fillStyle = 'black';
+
+  Canvas_sceneContext.fill();
+  Canvas_sceneContext.restore();
 
   // legs
   Canvas_sceneContext.save();
@@ -124,10 +138,10 @@ var Zurbo_render = function() {
   Canvas_sceneContext.translate(0, -1 * Zurbo_vm_legs_length);
   Zurbo_renderLeg(-1);
   Zurbo_renderLeg(1);
-  
   Canvas_sceneContext.restore();
 
   // body
+  Canvas_sceneContext.save();
   Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
   Canvas_sceneContext.translate(0, -1 * Zurbo_vm_legs_length);
   Canvas_sceneContext.rotate(Zurbo_vm_body_angle);
@@ -167,6 +181,7 @@ var Zurbo_render = function() {
   Canvas_sceneContext.fillStyle = gradient;
   Canvas_sceneContext.fill();
   Canvas_sceneContext.restore();
+
 
 
 
@@ -217,7 +232,7 @@ var Zurbo_update = function(timeDiff) {
 
 
   if (Zurbo_jumpsLeft === 0) {
-    Zurbo_vm_legs_angle = Math.PI * -0.05;
+    Zurbo_vm_legs_angle = Math.PI * 0;
   }
   else if (Zurbo_jumpsLeft === 1) {
     Zurbo_vm_legs_angle = Math.PI * 0.2;

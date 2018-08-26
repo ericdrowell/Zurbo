@@ -30,7 +30,8 @@ var createCanvas = function() {
   canvas.style.position = 'absolute';
   canvas.width = Game_viewportWidth;
   canvas.height = Game_viewportHeight;
-  canvas.style.width = '1000px';
-  canvas.style.height = '666px';
+  // canvas.style.width = (Game_viewportWidth * 2) + 'px';
+  // canvas.style.height = (Game_viewportHeight * 2) + 'px';
+
   return canvas;
 };

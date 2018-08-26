@@ -8,6 +8,7 @@ var Game_init = function() {
   
 
   Canvas_init();
+  Music_init();
   SoundEffects_init();
   Zurbo_init();
 
