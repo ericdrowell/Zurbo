@@ -7,11 +7,12 @@ var Zurbo_vm_head_radius = 20;
 var Zurbo_vm_head_horn_length = 30;
 var Zurbo_vm_head_horn_radius = 5;
 
-var Zurbo_vm_legs_length = 20;
-var Zurbo_vm_legs_angle = Math.PI*0.1;
+var Zurbo_vm_legs_length = 30;
+var Zurbo_vm_legs_angle = Math.PI*-0.0;
 
 var Zurbo_bodyColor = '#ff00f6';
-var Zurbo_legColor = '#df00d7';
+var Zurbo_bodyColorDark = '#df00d7';
+var Zurbo_legSpacing = 20;
 var Zurbo_hornColor = 'white';
 
 var Zurbo_gravity = 2000; // pixels / second^2
@@ -113,14 +114,15 @@ var Zurbo_render = function() {
 
   Canvas_sceneContext.save();
 
+
   // legs
   Canvas_sceneContext.save();
   Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
   Canvas_sceneContext.translate(0, -1 * Zurbo_vm_legs_length);
-  Zurbo_renderLeg(1);
-  Zurbo_renderLeg(-1);
+  Zurbo_renderLeg(Zurbo_legSpacing/2, true);
+  Zurbo_renderLeg(Zurbo_legSpacing/-2, false);
+  
   Canvas_sceneContext.restore();
-
 
   // body
   Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
@@ -131,7 +133,13 @@ var Zurbo_render = function() {
   Canvas_sceneContext.arc(0, 0, Zurbo_vm_body_radius, 0, Math.PI*2, false);
   Canvas_sceneContext.shadowBlur=30;
   Canvas_sceneContext.shadowColor = Zurbo_bodyColor;
-  Canvas_sceneContext.fillStyle = Zurbo_bodyColor;
+  //Canvas_sceneContext.fillStyle = Zurbo_bodyColor;
+
+  var gradient = Canvas_sceneContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_body_radius);
+  gradient.addColorStop(0, Zurbo_bodyColor);
+  gradient.addColorStop(1, Zurbo_bodyColorDark);
+  Canvas_sceneContext.fillStyle = gradient;
+
   Canvas_sceneContext.fill();
 
   // head
@@ -145,27 +153,31 @@ var Zurbo_render = function() {
   //Canvas_sceneContext.rotate(Math.PI*0.1);
   Canvas_sceneContext.beginPath();
   Canvas_sceneContext.moveTo(0, -1 * (Zurbo_vm_head_horn_length + Zurbo_vm_head_radius));
-  Canvas_sceneContext.lineTo(-1 * Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius);
-  Canvas_sceneContext.lineTo(Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius);
+  Canvas_sceneContext.lineTo(-1 * Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius + 5);
+  Canvas_sceneContext.lineTo(Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius + 5);
   Canvas_sceneContext.shadowBlur = 30;
   Canvas_sceneContext.shadowColor = Zurbo_hornColor;
   Canvas_sceneContext.fillStyle = Zurbo_hornColor;
   Canvas_sceneContext.fill();
-
   Canvas_sceneContext.restore();
+
 
 
 };
 
-var Zurbo_renderLeg = function(polarity) {
+var Zurbo_renderLeg = function(offset, isDark) {
+  var polarity = offset > 0 ? -1 : 1;
+  var legColor = isDark ? Zurbo_bodyColorDark : Zurbo_bodyColor;
+
   Canvas_sceneContext.save();
+  Canvas_sceneContext.translate(offset, 0);
   Canvas_sceneContext.rotate(Zurbo_vm_legs_angle * polarity);
   Canvas_sceneContext.beginPath();
   Canvas_sceneContext.moveTo(0, 0);
   Canvas_sceneContext.bezierCurveTo(-40, Zurbo_vm_body_radius+Zurbo_vm_legs_length+20, 40, Zurbo_vm_body_radius+Zurbo_vm_legs_length+20, 0, 0);
   Canvas_sceneContext.shadowBlur = 30;
   Canvas_sceneContext.shadowColor = Zurbo_bodyColor;
-  Canvas_sceneContext.fillStyle = Zurbo_bodyColor;
+  Canvas_sceneContext.fillStyle = legColor;
   Canvas_sceneContext.fill();
   Canvas_sceneContext.restore();
 };
