@@ -11,7 +11,6 @@ var Game_init = function() {
 
   Game_setupDom();
   
-
   Canvas_init();
   Music_init();
   SoundEffects_init();
@@ -20,8 +19,6 @@ var Game_init = function() {
   Level1_render();
   Game_listen();
   Game_loop();
-
-  
 };
 
 var Game_mouseToCanvas = function(point) {
