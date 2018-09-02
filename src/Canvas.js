@@ -10,26 +10,38 @@ var Canvas_foregroundContext;
 var Canvas_sceneCanvas;
 var Canvas_sceneContext;
 
+var Canvas_zurboSpriteCanvas;
+var Canvas_zurboSpriteContext;
+
 var Canvas_init = function() {
-  Canvas_backgroundCanvas = Canvas_createCanvas();
+  Canvas_backgroundCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
   Canvas_backgroundContext = Canvas_backgroundCanvas.getContext('2d');
 
-  Canvas_middlegroundCanvas = Canvas_createCanvas();
+  Canvas_middlegroundCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
   Canvas_middlegroundContext = Canvas_middlegroundCanvas.getContext('2d');
 
-  Canvas_foregroundCanvas = Canvas_createCanvas();
+  Canvas_foregroundCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
   Canvas_foregroundContext = Canvas_foregroundCanvas.getContext('2d');
 
-  Canvas_sceneCanvas = Canvas_createCanvas();
+  Canvas_sceneCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
   Canvas_sceneContext = Canvas_sceneCanvas.getContext('2d');
+
+  Canvas_zurboSpriteCanvas = Canvas_createCanvas(100, 200);
+  Canvas_zurboSpriteContext = Canvas_zurboSpriteCanvas.getContext('2d');
+
+  // debug
+  Canvas_zurboSpriteCanvas.style.position = 'fixed';
+  Canvas_zurboSpriteCanvas.style.border = '2px solid red';
+  Canvas_zurboSpriteCanvas.style.top = 0;
+  document.body.appendChild(Canvas_zurboSpriteCanvas);
 };
 
-var Canvas_createCanvas = function() {
+var Canvas_createCanvas = function(width, height) {
   var canvas = document.createElement('canvas');
   canvas.style.display = 'inline-block';
   canvas.style.position = 'absolute';
-  canvas.width = Game_viewportWidth;
-  canvas.height = Game_viewportHeight;
+  canvas.width = width;
+  canvas.height = height;
   // canvas.style.width = (Game_viewportWidth * 2) + 'px';
   // canvas.style.height = (Game_viewportHeight * 2) + 'px';
 
@@ -58,7 +70,6 @@ var Canvas_pixelate = function(context, pixelation) {
     }
   }
 
-  // overwrite original image
   context.putImageData(imageData, 0, 0);
 };
 

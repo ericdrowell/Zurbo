@@ -2,21 +2,32 @@ var Zurbo_vm_body_x = 0;
 var Zurbo_vm_body_y = -200;
 var Zurbo_vm_body_radius = 30;
 var Zurbo_vm_body_angle = Math.PI*0.1;
-
+var Zurbo_vm_body_head_distance = 40;
 var Zurbo_vm_head_radius = 25;
-var Zurbo_vm_head_horn_length = 30;
+var Zurbo_vm_head_horn_length = 50;
 var Zurbo_vm_head_horn_radius = 5;
 
 var Zurbo_vm_legs_length = 30;
 var Zurbo_vm_legs_angle = Math.PI*0.2;
 
-var Zurbo_bodyColor = '#ff00f6';
-var Zurbo_bodyColorDark = '#df00d7';
+// [angle, radius, color]
+var Zurbo_vm_body_hair = [];
+var Zurbo_vm_head_hair = [];
+
+// light -> dark
+var Zurbo_bodyColor = ['#ffa6fc', '#ff00f6', '#e600de', '#91008c'];
+
+
+
+
+
+
 var Zurbo_legSpacing = 20;
 var Zurbo_hornColor = 'white';
+var Zurbo_hair_length = 10;
 
 var Zurbo_gravity = 2000; // pixels / second^2
-var Zurbo_runSpeed = 300; // pixels / second
+var Zurbo_runSpeed = 500; // pixels / second
 var Zurbo_direction = 0;
 var Zurbo_verticalVelocity = 0; // pixels / second
 var Zurbo_jumpVelocity = -800;
@@ -24,9 +35,106 @@ var Zurbo_jumpVelocity = -800;
 // Zurbo can jump once off the ground, and then in the air!
 var Zurbo_jumpsLeft = 0;
 
+var Zurbo_aDown = false;
+var Zurbo_dDown = false;
 
 var Zurbo_init = function() {
+  Zurbo_buildHair();
+  Zurbo_renderSprites();
   Zurbo_listen();
+};
+
+var Zurbo_buildHair = function() {
+  var n, colorIndex, normalizedAngle;
+  //var colors = ['red', 'blue'];
+  var colors = [Zurbo_bodyColor[0], Zurbo_bodyColor[1], Zurbo_bodyColor[3]];
+  for (n=0; n<3000; n++) {
+    normalizedAngle = Math.random() - 0.5;
+    Zurbo_vm_body_hair.push(normalizedAngle * Math.PI * 2);
+    Zurbo_vm_body_hair.push(Math.random() * Zurbo_vm_body_radius);
+    colorIndex = Math.round(Math.random() * (colors.length-1));
+    Zurbo_vm_body_hair.push(colors[colorIndex]);
+  }
+
+  for (n=0; n<3000; n++) {
+    normalizedAngle = Math.random();
+    Zurbo_vm_head_hair.push(normalizedAngle * Math.PI * 2);
+    Zurbo_vm_head_hair.push(Math.random() * Zurbo_vm_head_radius);
+    colorIndex = Math.round(Math.random() * (colors.length-1));
+    Zurbo_vm_head_hair.push(colors[colorIndex]);
+  }
+
+};
+
+var Zurbo_renderHair = function(angle, radius, color) {
+  Canvas_zurboSpriteContext.save();
+  Canvas_zurboSpriteContext.beginPath(); 
+  Canvas_zurboSpriteContext.rotate(angle);
+  Canvas_zurboSpriteContext.translate(0, radius);
+  Canvas_zurboSpriteContext.moveTo(0, 0);
+  Canvas_zurboSpriteContext.lineTo(0, Zurbo_hair_length);
+
+  Canvas_zurboSpriteContext.globalAlpha = 0.8;
+  Canvas_zurboSpriteContext.strokeStyle = color;
+
+  Canvas_zurboSpriteContext.shadowBlur=5;
+  Canvas_zurboSpriteContext.shadowColor = Zurbo_bodyColor[3];
+
+  Canvas_zurboSpriteContext.stroke();
+  Canvas_zurboSpriteContext.restore();
+};
+
+var Zurbo_renderSprites = function() {
+  var n, angle, radius, color;
+
+  Canvas_zurboSpriteContext.save();
+  Canvas_zurboSpriteContext.translate(50, 150);
+
+  // body
+  for (n=0; n<Zurbo_vm_body_hair.length; n+=3) {
+    angle = Zurbo_vm_body_hair[n];
+    radius = Zurbo_vm_body_hair[n+1];
+    color = Zurbo_vm_body_hair[n+2];
+    Zurbo_renderHair(angle, radius, color);
+  }
+
+  // Canvas_zurboSpriteContext.save();
+  // Canvas_zurboSpriteContext.beginPath();
+  // Canvas_zurboSpriteContext.arc(0, 0, Zurbo_vm_body_radius, 0, Math.PI*2, false);
+  // gradient = Canvas_zurboSpriteContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_body_radius);
+  // gradient.addColorStop(0, Zurbo_bodyColorLight);
+  // gradient.addColorStop(1, Zurbo_bodyColorDark);
+  // Canvas_zurboSpriteContext.fillStyle = gradient;
+  // Canvas_zurboSpriteContext.globalAlpha = 0.7;
+  // Canvas_zurboSpriteContext.fill();
+  // Canvas_zurboSpriteContext.restore();
+
+  Canvas_zurboSpriteContext.translate(0, -1 * Zurbo_vm_body_head_distance);
+
+  // head
+  for (n=0; n<Zurbo_vm_body_hair.length; n+=3) {
+    angle = Zurbo_vm_head_hair[n];
+    radius = Zurbo_vm_head_hair[n+1];
+    color = Zurbo_vm_head_hair[n+2];
+    Zurbo_renderHair(angle, radius, color);
+  }
+
+  // horn
+  // Canvas_zurboSpriteContext.beginPath();
+  // Canvas_zurboSpriteContext.moveTo(0, -1 * (Zurbo_vm_head_horn_length + Zurbo_vm_head_radius));
+  // Canvas_zurboSpriteContext.lineTo(-1 * Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius + 5);
+  // Canvas_zurboSpriteContext.lineTo(Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius + 5);
+  // //Canvas_sceneContext.shadowBlur = 30;
+  // //Canvas_sceneContext.shadowColor = Zurbo_hornColor;
+  // // gradient = Canvas_zurboSpriteContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_head_radius);
+  // // gradient.addColorStop(0, Zurbo_bodyColorLight);
+  // // gradient.addColorStop(1, Zurbo_bodyColorDark);
+  // // Canvas_zurboSpriteContext.fillStyle = gradient;
+  // Canvas_zurboSpriteContext.fillStyle = Zurbo_bodyColor;
+  // Canvas_zurboSpriteContext.fill();
+
+
+  Canvas_zurboSpriteContext.restore();
 };
 
 var Zurbo_listen = function() {
@@ -35,18 +143,13 @@ var Zurbo_listen = function() {
     //Music_play();
   });
 
-  var wDown = false;
-  var aDown = false;
-  var sDown = false;
-  var dDown = false;
-
   document.addEventListener('keydown', function(evt) {
     var keycode = ((evt.which) || (evt.keyCode));
 
     switch (keycode) {
       case 65:
         // a
-        aDown = true;
+        Zurbo_aDown = true;
         Zurbo_direction = -1;
         break;
       case 87:
@@ -55,7 +158,7 @@ var Zurbo_listen = function() {
         break;
       case 68:
         // d
-        dDown = true;
+        Zurbo_dDown = true;
         Zurbo_direction = 1;
         break;
       case 83: 
@@ -79,9 +182,9 @@ var Zurbo_listen = function() {
     switch (keycode) {
       case 65:
         // a
-        aDown = false;
+        Zurbo_aDown = false;
 
-        if (!aDown && !dDown) {
+        if (!Zurbo_aDown && !Zurbo_dDown) {
           Zurbo_direction = 0;
         }
         
@@ -92,8 +195,8 @@ var Zurbo_listen = function() {
         break;
       case 68:
         // d
-        dDown = false;
-        if (!aDown && !dDown) {
+        Zurbo_dDown = false;
+        if (!Zurbo_aDown && !Zurbo_dDown) {
           Zurbo_direction = 0;
         }
         
@@ -117,8 +220,85 @@ var Zurbo_render = function() {
   var gradient;
   
 
+  Zurbo_renderShadow();
+  Zurbo_renderLegs();
+  Zurbo_renderHorn();
+  Zurbo_renderBodyAndHead();
 
-  // shadow
+
+  // body
+  // Canvas_sceneContext.save();
+  // Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
+  // Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
+  // Canvas_sceneContext.rotate(Zurbo_vm_body_angle);
+  
+  // Canvas_sceneContext.beginPath();
+  // Canvas_sceneContext.arc(0, 0, Zurbo_vm_body_radius, 0, Math.PI*2, false);
+  // //Canvas_sceneContext.shadowBlur=30;
+  // //Canvas_sceneContext.shadowColor = Zurbo_bodyColor;
+  // gradient = Canvas_sceneContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_body_radius);
+  // gradient.addColorStop(0, Zurbo_bodyColor);
+  // gradient.addColorStop(1, Zurbo_bodyColorDark);
+  // Canvas_sceneContext.fillStyle = gradient;
+
+  // Canvas_sceneContext.fill();
+
+  // head
+  // Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_body_radius + Zurbo_vm_head_radius/2));
+  // Canvas_sceneContext.beginPath();
+  // Canvas_sceneContext.arc(0, 0, Zurbo_vm_head_radius, 0, Math.PI*2, false);
+  // gradient = Canvas_sceneContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_head_radius);
+  // gradient.addColorStop(0, Zurbo_bodyColor);
+  // gradient.addColorStop(1, Zurbo_bodyColorDark);
+  // Canvas_sceneContext.fillStyle = gradient;
+  // Canvas_sceneContext.fill();
+
+  // head horn
+  //Canvas_sceneContext.rotate(Math.PI*0.1);
+  // Canvas_sceneContext.beginPath();
+  // Canvas_sceneContext.moveTo(0, -1 * (Zurbo_vm_head_horn_length + Zurbo_vm_head_radius));
+  // Canvas_sceneContext.lineTo(-1 * Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius + 5);
+  // Canvas_sceneContext.lineTo(Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius + 5);
+  // //Canvas_sceneContext.shadowBlur = 30;
+  // //Canvas_sceneContext.shadowColor = Zurbo_hornColor;
+  // gradient = Canvas_sceneContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_head_radius);
+  // gradient.addColorStop(0, Zurbo_bodyColor);
+  // gradient.addColorStop(1, Zurbo_bodyColorDark);
+  // Canvas_sceneContext.fillStyle = gradient;
+  // Canvas_sceneContext.fill();
+  // Canvas_sceneContext.restore();
+};
+
+
+// var Zurbo_renderArm = function() {
+//   Canvas_sceneContext.save();
+//   var angle = Zurbo_vm_body_hair[0];
+//   var radius = Zurbo_vm_body_hair[1];
+//   Canvas_sceneContext.beginPath(); 
+//   Canvas_sceneContext.moveTo(0, 0);
+//   Canvas_sceneContext.lineTo(0, 20);
+//   Canvas_sceneContext.stroke();
+//   Canvas_sceneContext.restore();
+// };
+
+var Zurbo_renderHorn = function() {
+  Canvas_sceneContext.save();
+  Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
+  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
+  Canvas_sceneContext.rotate(Zurbo_vm_body_angle);
+  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_body_radius + Zurbo_vm_body_head_distance));
+
+
+  Canvas_sceneContext.beginPath();
+  Canvas_sceneContext.moveTo(-1 * Zurbo_vm_head_horn_radius, 0);
+  Canvas_sceneContext.lineTo(Zurbo_vm_head_horn_radius, 0);
+  Canvas_sceneContext.lineTo(0, -1 * Zurbo_vm_head_horn_length);
+  Canvas_sceneContext.fillStyle = Zurbo_bodyColor[2];
+  Canvas_sceneContext.fill();
+  Canvas_sceneContext.restore();
+};
+
+var Zurbo_renderShadow = function() {
   var shadowRadius = Zurbo_vm_body_radius * 0.18 * Game_viewportHeight / (Game_viewportHeight-Zurbo_vm_body_y);
   Canvas_sceneContext.save();
   Canvas_sceneContext.beginPath();
@@ -133,78 +313,45 @@ var Zurbo_render = function() {
 
   Canvas_sceneContext.fill();
   Canvas_sceneContext.restore();
-
-  // legs
+};
+var Zurbo_renderLegs = function() {
   Canvas_sceneContext.save();
   Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
   Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
   Zurbo_renderLeg(-1);
   Zurbo_renderLeg(1);
   Canvas_sceneContext.restore();
-
-  // body
-  Canvas_sceneContext.save();
-  Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
-  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
-  Canvas_sceneContext.rotate(Zurbo_vm_body_angle);
-  
-  Canvas_sceneContext.beginPath();
-  Canvas_sceneContext.arc(0, 0, Zurbo_vm_body_radius, 0, Math.PI*2, false);
-  //Canvas_sceneContext.shadowBlur=30;
-  //Canvas_sceneContext.shadowColor = Zurbo_bodyColor;
-  gradient = Canvas_sceneContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_body_radius);
-  gradient.addColorStop(0, Zurbo_bodyColor);
-  gradient.addColorStop(1, Zurbo_bodyColorDark);
-  Canvas_sceneContext.fillStyle = gradient;
-
-  Canvas_sceneContext.fill();
-
-  // head
-  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_body_radius + Zurbo_vm_head_radius/2));
-  Canvas_sceneContext.beginPath();
-  Canvas_sceneContext.arc(0, 0, Zurbo_vm_head_radius, 0, Math.PI*2, false);
-  gradient = Canvas_sceneContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_head_radius);
-  gradient.addColorStop(0, Zurbo_bodyColor);
-  gradient.addColorStop(1, Zurbo_bodyColorDark);
-  Canvas_sceneContext.fillStyle = gradient;
-  Canvas_sceneContext.fill();
-
-  // head horn
-  //Canvas_sceneContext.rotate(Math.PI*0.1);
-  Canvas_sceneContext.beginPath();
-  Canvas_sceneContext.moveTo(0, -1 * (Zurbo_vm_head_horn_length + Zurbo_vm_head_radius));
-  Canvas_sceneContext.lineTo(-1 * Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius + 5);
-  Canvas_sceneContext.lineTo(Zurbo_vm_head_horn_radius, -1 * Zurbo_vm_head_radius + 5);
-  //Canvas_sceneContext.shadowBlur = 30;
-  //Canvas_sceneContext.shadowColor = Zurbo_hornColor;
-  gradient = Canvas_sceneContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_head_radius);
-  gradient.addColorStop(0, Zurbo_bodyColor);
-  gradient.addColorStop(1, Zurbo_bodyColorDark);
-  Canvas_sceneContext.fillStyle = gradient;
-  Canvas_sceneContext.fill();
-  Canvas_sceneContext.restore();
-
-
-
-
 };
 
 var Zurbo_renderLeg = function(side) {
   var gradient;
   var offset = -1 * side * Zurbo_legSpacing/2;
   Canvas_sceneContext.save();
-  Canvas_sceneContext.translate(offset, 0);
+  Canvas_sceneContext.translate(0, 0);
   Canvas_sceneContext.rotate(Zurbo_vm_legs_angle * side);
   Canvas_sceneContext.beginPath();
   Canvas_sceneContext.moveTo(0, 0);
   Canvas_sceneContext.bezierCurveTo(-40, Zurbo_vm_body_radius+Zurbo_vm_legs_length+20, 40, Zurbo_vm_body_radius+Zurbo_vm_legs_length+20, 0, 0);
   //Canvas_sceneContext.shadowBlur = 30;
   //Canvas_sceneContext.shadowColor = Zurbo_bodyColor;
-  gradient = Canvas_sceneContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_legs_length);
-  gradient.addColorStop(0, Zurbo_bodyColor);
-  gradient.addColorStop(1, Zurbo_bodyColorDark);
-  Canvas_sceneContext.fillStyle = gradient;
+  // gradient = Canvas_sceneContext.createRadialGradient(10, -10, 0, 10, -10, Zurbo_vm_legs_length);
+  // gradient.addColorStop(0, Zurbo_bodyColor);
+  // gradient.addColorStop(1, Zurbo_bodyColorDark);
+  //Canvas_sceneContext.fillStyle = gradient;
+  Canvas_sceneContext.fillStyle = Zurbo_bodyColor[2];
   Canvas_sceneContext.fill();
+  Canvas_sceneContext.restore();
+};
+
+var Zurbo_renderBodyAndHead = function() {
+  Canvas_sceneContext.save();
+
+  Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
+  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
+
+  Canvas_sceneContext.rotate(Zurbo_vm_body_angle);
+  Canvas_sceneContext.translate(-50, -150);
+  Canvas_sceneContext.drawImage(Canvas_zurboSpriteCanvas, 0, 0);
   Canvas_sceneContext.restore();
 };
 
@@ -234,13 +381,19 @@ var Zurbo_update = function(timeDiff) {
 
 
   if (Zurbo_jumpsLeft === 0) {
-    Zurbo_vm_legs_angle = Math.PI * 0.2;
+    Zurbo_vm_legs_angle = Math.PI * 0.3;
   }
   else if (Zurbo_jumpsLeft === 1) {
     Zurbo_vm_legs_angle = Math.PI * 0;
   }
   else if (Zurbo_jumpsLeft === 2) {
-    Zurbo_vm_legs_angle = Math.PI * 0.05;
+    //Zurbo_vm_legs_angle = Math.PI * 0.05;
+    if (Zurbo_aDown || Zurbo_dDown) {
+      Zurbo_vm_legs_angle = Math.sin(new Date().getTime()/100);
+    }
+    else {
+      Zurbo_vm_legs_angle = Math.PI * 0.1;
+    }
   }
 
   Zurbo_updateBodyAngle();

@@ -56,7 +56,7 @@ var Game_mouseToCanvas = function(point) {
 };
 
 var Game_listen = function() {
-  document.addEventListener('mousemove', function(evt) {
+  document.body.addEventListener('mousemove', function(evt) {
     Game_mouseX = evt.clientX;
     Game_mouseY = evt.clientY;
   });
@@ -91,7 +91,7 @@ var Game_render = function() {
 
   Zurbo_render();
 
-  //Canvas_pixelate(Canvas_sceneContext, 5);
+  //Canvas_pixelate(Canvas_sceneContext, 3);
 
   var sceneUrl = Canvas_sceneCanvas.toDataURL();
 
