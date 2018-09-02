@@ -188,7 +188,7 @@ var Zurbo_listen = function() {
 var Zurbo_render = function() {
   var gradient;
 
-  Zurbo_renderShadow();
+  //Zurbo_renderShadow();
   Zurbo_renderLegs();
   Zurbo_renderHorn();
   Zurbo_renderBodyAndHead();
@@ -207,7 +207,7 @@ var Zurbo_renderHorn = function() {
   Canvas_sceneContext.moveTo(-1 * Zurbo_vm_head_horn_radius, 0);
   Canvas_sceneContext.lineTo(Zurbo_vm_head_horn_radius, 0);
   Canvas_sceneContext.lineTo(0, -1 * Zurbo_vm_head_horn_length);
-  Canvas_sceneContext.fillStyle = Zurbo_bodyColor[2];
+  Canvas_sceneContext.fillStyle = Zurbo_bodyColor[1];
   Canvas_sceneContext.fill();
   Canvas_sceneContext.restore();
 };
@@ -248,6 +248,13 @@ var Zurbo_renderLeg = function(side) {
   Canvas_sceneContext.bezierCurveTo(-40, Zurbo_vm_body_radius+Zurbo_vm_legs_length+20, 40, Zurbo_vm_body_radius+Zurbo_vm_legs_length+20, 0, 0);
   Canvas_sceneContext.fillStyle = Zurbo_bodyColor[2];
   Canvas_sceneContext.fill();
+
+  Canvas_sceneContext.beginPath();
+  Canvas_sceneContext.fillStyle = Zurbo_bodyColor[0];
+  Canvas_sceneContext.fillRect(-7, 20, 14, 30);
+
+
+
   Canvas_sceneContext.restore();
 };
 
@@ -330,8 +337,8 @@ var Zurbo_update = function(timeDiff) {
   }
   else if (Zurbo_jumpsLeft === 2) {
     //Zurbo_vm_legs_angle = Math.PI * 0.05;
-    if (Zurbo_aDown || Zurbo_dDown) {
-      Zurbo_vm_legs_angle = Math.sin(new Date().getTime()/50);
+    if (Zurbo_isRunning()) {
+      Zurbo_vm_legs_angle = Math.sin(new Date().getTime()/50)*0.6;
     }
     else {
       Zurbo_vm_legs_angle = Math.PI * 0.1;

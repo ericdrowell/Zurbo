@@ -16,7 +16,7 @@ var Game_init = function() {
   SoundEffects_init();
   Zurbo_init();
   
-  Level1_render();
+  Level_render();
   Game_listen();
   Game_loop();
 };
@@ -84,7 +84,7 @@ var Game_render = function() {
   Canvas_sceneContext.clearRect(0, 0, Game_viewportWidth, Game_viewportHeight);
 
   Canvas_sceneContext.drawImage(Canvas_backgroundCanvas, -1 * Zurbo_vm_body_x, 0);
-  Canvas_sceneContext.drawImage(Canvas_middlegroundCanvas, -1 * Zurbo_vm_body_x, 0);
+  Canvas_sceneContext.drawImage(Canvas_foregroundCanvas, -1 * Zurbo_vm_body_x, 0);
 
   Zurbo_render();
 

@@ -14,26 +14,41 @@ var Canvas_zurboSpriteCanvas;
 var Canvas_zurboSpriteContext;
 
 var Canvas_init = function() {
-  Canvas_backgroundCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
+  // 0 - farthest canvas, doesn't move
+  Canvas_backgroundCanvas = Canvas_createCanvas(Level_width, Game_viewportHeight);
   Canvas_backgroundContext = Canvas_backgroundCanvas.getContext('2d');
 
-  Canvas_middlegroundCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
+  // 1 - far away canvas, moves slowly
+  Canvas_distantCanvas = Canvas_createCanvas(Level_width/2, Game_viewportHeight);
+  Canvas_distantContext = Canvas_distantCanvas.getContext('2d');
+
+  // 2 - canvas behind the layer, no interaction
+  Canvas_middlegroundCanvas = Canvas_createCanvas(Level_width, Game_viewportHeight);
   Canvas_middlegroundContext = Canvas_middlegroundCanvas.getContext('2d');
 
-  Canvas_foregroundCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
+  // 3 - canvas touching the player, has interaction
+  Canvas_foregroundCanvas = Canvas_createCanvas(Level_width, Game_viewportHeight);
   Canvas_foregroundContext = Canvas_foregroundCanvas.getContext('2d');
 
+  // scene composite
   Canvas_sceneCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
   Canvas_sceneContext = Canvas_sceneCanvas.getContext('2d');
 
   Canvas_zurboSpriteCanvas = Canvas_createCanvas(100, 200);
   Canvas_zurboSpriteContext = Canvas_zurboSpriteCanvas.getContext('2d');
 
-  // debug
-  Canvas_zurboSpriteCanvas.style.position = 'fixed';
-  Canvas_zurboSpriteCanvas.style.border = '2px solid red';
-  Canvas_zurboSpriteCanvas.style.top = 0;
-  document.body.appendChild(Canvas_zurboSpriteCanvas);
+  Canvas_blocksSpriteCanvas = Canvas_createCanvas(1000, 100);
+  Canvas_blocksSpriteContext = Canvas_blocksSpriteCanvas.getContext('2d');
+
+  //Canvas_debug(Canvas_foregroundCanvas);
+  Canvas_debug(Canvas_blocksSpriteCanvas);
+};
+
+var Canvas_debug = function(canvas) {
+  canvas.style.position = 'fixed';
+  canvas.style.border = '2px solid red';
+  canvas.style.top = 0;
+  document.body.appendChild(canvas);
 };
 
 var Canvas_createCanvas = function(width, height) {
