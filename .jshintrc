@@ -1,3 +1,4 @@
 {
-  "elision": true
+  "elision": true,
+  "debug": true
 }

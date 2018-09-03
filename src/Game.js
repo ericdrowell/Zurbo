@@ -86,8 +86,8 @@ var Game_loop = function() {
 var Game_render = function() {
   Canvas_sceneContext.clearRect(0, 0, Game_viewportWidth, Game_viewportHeight);
 
-  Canvas_sceneContext.drawImage(Canvas_backgroundCanvas, -1 * Zurbo_vm_body_x, 0);
-  Canvas_sceneContext.drawImage(Canvas_foregroundCanvas, -1 * Zurbo_vm_body_x, 0);
+  Canvas_sceneContext.drawImage(Canvas_backgroundCanvas, -1 * Zurbo_x, 0);
+  Canvas_sceneContext.drawImage(Canvas_foregroundCanvas, -1 * Zurbo_x, 0);
 
   Zurbo_render();
 

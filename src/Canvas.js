@@ -83,33 +83,6 @@ var Canvas_getContext = function(canvas) {
   return context;
 };
 
-// var Canvas_pixelate = function(context, pixelation) {
-//   var imageData = context.getImageData(0, 0, Game_viewportWidth, Game_viewportHeight);
-//   var data = imageData.data;
-
-//   for(var y = 0; y < Game_viewportHeight; y += pixelation) {
-//     for(var x = 0; x < Game_viewportWidth; x += pixelation) {
-//       var red = data[((Game_viewportWidth * y) + x) * 4];
-//       var green = data[((Game_viewportWidth * y) + x) * 4 + 1];
-//       var blue = data[((Game_viewportWidth * y) + x) * 4 + 2];
-
-//       for(var n = 0; n < pixelation; n++) {
-//         for(var m = 0; m < pixelation; m++) {
-//           if(x + m < Game_viewportWidth) {
-//             data[((Game_viewportWidth * (y + n)) + (x + m)) * 4] = red;
-//             data[((Game_viewportWidth * (y + n)) + (x + m)) * 4 + 1] = green;
-//             data[((Game_viewportWidth * (y + n)) + (x + m)) * 4 + 2] = blue;
-//           }
-
-
-//         }
-//       }
-//     }
-//   }
-
-//   context.putImageData(imageData, 0, 0);
-// };
-
 function Canvas_pixelate(canvas, context, pixelation) {
   //var w = Game_viewportWidth * size;
   //var h = Game_viewportHeight * size;
