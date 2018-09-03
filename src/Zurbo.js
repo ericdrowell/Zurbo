@@ -26,6 +26,9 @@ var Zurbo_runSpeed = 500; // pixels / second
 var Zurbo_direction = 0;
 var Zurbo_verticalVelocity = 0; // pixels / second
 var Zurbo_jumpVelocity = -800;
+var Zurbo_spriteVelocity = 6; // sprites / second
+var Zurbo_spriteIndex = 0;
+var Zurbo_faceDirection = true;
 
 // Zurbo can jump once off the ground, and then in the air!
 var Zurbo_jumpsLeft = 0;
@@ -34,77 +37,77 @@ var Zurbo_aDown = false;
 var Zurbo_dDown = false;
 
 var Zurbo_init = function() {
-  Zurbo_buildHair();
-  Zurbo_renderSprites();
   Zurbo_listen();
 };
 
-var Zurbo_buildHair = function() {
-  var n, colorIndex, normalizedAngle;
-  //var colors = ['red', 'blue'];
-  var colors = [Zurbo_bodyColor[0], Zurbo_bodyColor[1], Zurbo_bodyColor[3]];
-  for (n=0; n<3000; n++) {
-    normalizedAngle = Math.random() - 0.5;
-    Zurbo_vm_body_hair.push(normalizedAngle * Math.PI * 2);
-    Zurbo_vm_body_hair.push(Math.random() * Zurbo_vm_body_radius);
-    colorIndex = Math.round(Math.random() * (colors.length-1));
-    Zurbo_vm_body_hair.push(colors[colorIndex]);
-  }
+// var Zurbo_buildHair = function() {
+//   var n, colorIndex, normalizedAngle;
+//   //var colors = ['red', 'blue'];
+//   var colors = [Zurbo_bodyColor[0], Zurbo_bodyColor[1], Zurbo_bodyColor[3]];
+//   for (n=0; n<3000; n++) {
+//     normalizedAngle = Math.random() - 0.5;
+//     Zurbo_vm_body_hair.push(normalizedAngle * Math.PI * 2);
+//     Zurbo_vm_body_hair.push(Math.random() * Zurbo_vm_body_radius);
+//     colorIndex = Math.round(Math.random() * (colors.length-1));
+//     Zurbo_vm_body_hair.push(colors[colorIndex]);
+//   }
 
-  for (n=0; n<3000; n++) {
-    normalizedAngle = Math.random();
-    Zurbo_vm_head_hair.push(normalizedAngle * Math.PI * 2);
-    Zurbo_vm_head_hair.push(Math.random() * Zurbo_vm_head_radius);
-    colorIndex = Math.round(Math.random() * (colors.length-1));
-    Zurbo_vm_head_hair.push(colors[colorIndex]);
-  }
+//   for (n=0; n<3000; n++) {
+//     normalizedAngle = Math.random();
+//     Zurbo_vm_head_hair.push(normalizedAngle * Math.PI * 2);
+//     Zurbo_vm_head_hair.push(Math.random() * Zurbo_vm_head_radius);
+//     colorIndex = Math.round(Math.random() * (colors.length-1));
+//     Zurbo_vm_head_hair.push(colors[colorIndex]);
+//   }
 
-};
+// };
 
-var Zurbo_renderHair = function(angle, radius, color) {
-  Canvas_zurboSpriteContext.save();
-  Canvas_zurboSpriteContext.beginPath(); 
-  Canvas_zurboSpriteContext.rotate(angle);
-  Canvas_zurboSpriteContext.translate(0, radius);
-  Canvas_zurboSpriteContext.moveTo(0, 0);
-  Canvas_zurboSpriteContext.lineTo(0, Zurbo_hair_length);
+// var Zurbo_renderHair = function(angle, radius, color) {
+//   Canvas_zurboSpriteContext.save();
+//   Canvas_zurboSpriteContext.beginPath(); 
+//   Canvas_zurboSpriteContext.rotate(angle);
+//   Canvas_zurboSpriteContext.translate(0, radius);
+//   Canvas_zurboSpriteContext.moveTo(0, 0);
+//   Canvas_zurboSpriteContext.lineTo(0, Zurbo_hair_length);
 
-  Canvas_zurboSpriteContext.globalAlpha = 0.8;
-  Canvas_zurboSpriteContext.strokeStyle = color;
+//   Canvas_zurboSpriteContext.globalAlpha = 0.8;
+//   Canvas_zurboSpriteContext.strokeStyle = color;
 
-  Canvas_zurboSpriteContext.shadowBlur=5;
-  Canvas_zurboSpriteContext.shadowColor = Zurbo_bodyColor[3];
+//   Canvas_zurboSpriteContext.shadowBlur=5;
+//   Canvas_zurboSpriteContext.shadowColor = Zurbo_bodyColor[3];
 
-  Canvas_zurboSpriteContext.stroke();
-  Canvas_zurboSpriteContext.restore();
-};
+//   Canvas_zurboSpriteContext.stroke();
+//   Canvas_zurboSpriteContext.restore();
+// };
 
-var Zurbo_renderSprites = function() {
-  var n, angle, radius, color;
+// var Zurbo_renderSprites = function() {
+//   // var n, angle, radius, color;
 
-  Canvas_zurboSpriteContext.save();
-  Canvas_zurboSpriteContext.translate(50, 150);
+//   // Canvas_zurboSpriteContext.save();
+//   // Canvas_zurboSpriteContext.translate(50, 150);
 
-  // body
-  for (n=0; n<Zurbo_vm_body_hair.length; n+=3) {
-    angle = Zurbo_vm_body_hair[n];
-    radius = Zurbo_vm_body_hair[n+1];
-    color = Zurbo_vm_body_hair[n+2];
-    Zurbo_renderHair(angle, radius, color);
-  }
+//   // // body
+//   // for (n=0; n<Zurbo_vm_body_hair.length; n+=3) {
+//   //   angle = Zurbo_vm_body_hair[n];
+//   //   radius = Zurbo_vm_body_hair[n+1];
+//   //   color = Zurbo_vm_body_hair[n+2];
+//   //   Zurbo_renderHair(angle, radius, color);
+//   // }
 
-  Canvas_zurboSpriteContext.translate(0, -1 * Zurbo_vm_body_head_distance);
+//   // Canvas_zurboSpriteContext.translate(0, -1 * Zurbo_vm_body_head_distance);
 
-  // head
-  for (n=0; n<Zurbo_vm_body_hair.length; n+=3) {
-    angle = Zurbo_vm_head_hair[n];
-    radius = Zurbo_vm_head_hair[n+1];
-    color = Zurbo_vm_head_hair[n+2];
-    Zurbo_renderHair(angle, radius, color);
-  }
+//   // // head
+//   // for (n=0; n<Zurbo_vm_body_hair.length; n+=3) {
+//   //   angle = Zurbo_vm_head_hair[n];
+//   //   radius = Zurbo_vm_head_hair[n+1];
+//   //   color = Zurbo_vm_head_hair[n+2];
+//   //   Zurbo_renderHair(angle, radius, color);
+//   // }
 
-  Canvas_zurboSpriteContext.restore();
-};
+//   // Canvas_zurboSpriteContext.restore();
+
+
+// };
 
 var Zurbo_listen = function() {
   document.addEventListener('click', function() {
@@ -120,6 +123,7 @@ var Zurbo_listen = function() {
         // a
         Zurbo_aDown = true;
         Zurbo_direction = -1;
+        Zurbo_faceDirection = -1;
         break;
       case 87:
         // w
@@ -129,6 +133,7 @@ var Zurbo_listen = function() {
         // d
         Zurbo_dDown = true;
         Zurbo_direction = 1;
+        Zurbo_faceDirection = 1;
         break;
       case 83: 
         // s
@@ -186,144 +191,163 @@ var Zurbo_listen = function() {
 
 
 var Zurbo_render = function() {
-  var gradient;
+  var spriteIndex;
 
   //Zurbo_renderShadow();
-  Zurbo_renderLegs();
-  Zurbo_renderHorn();
-  Zurbo_renderBodyAndHead();
-  Zurbo_renderFace();
-};
+  // Zurbo_renderLegs();
+  
+  // Zurbo_renderBodyAndHead();
+  // Zurbo_renderHorn();
+  // Zurbo_renderFace();
 
-var Zurbo_renderHorn = function() {
-  Canvas_sceneContext.save();
-  Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
-  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
-  Canvas_sceneContext.rotate(Zurbo_vm_body_angle);
-  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_body_radius + Zurbo_vm_body_head_distance));
-
-
-  Canvas_sceneContext.beginPath();
-  Canvas_sceneContext.moveTo(-1 * Zurbo_vm_head_horn_radius, 0);
-  Canvas_sceneContext.lineTo(Zurbo_vm_head_horn_radius, 0);
-  Canvas_sceneContext.lineTo(0, -1 * Zurbo_vm_head_horn_length);
-  Canvas_sceneContext.fillStyle = Zurbo_bodyColor[1];
-  Canvas_sceneContext.fill();
-  Canvas_sceneContext.restore();
-};
-
-var Zurbo_renderShadow = function() {
-  var shadowRadius = Zurbo_vm_body_radius * 0.18 * Game_viewportHeight / (Game_viewportHeight-Zurbo_vm_body_y);
-  Canvas_sceneContext.save();
-  Canvas_sceneContext.beginPath();
-  Canvas_sceneContext.globalAlpha = 0.2;
-  Canvas_sceneContext.translate(Game_viewportWidth/2, Game_viewportHeight-70);
-  Canvas_sceneContext.scale(1, 0.2);
-  Canvas_sceneContext.arc(0, 0, shadowRadius, 0, Math.PI*2, false);
-
-  //Canvas_sceneContext.shadowBlur = 10;
-  //Canvas_sceneContext.shadowColor = 'black';
-  Canvas_sceneContext.fillStyle = 'black';
-
-  Canvas_sceneContext.fill();
-  Canvas_sceneContext.restore();
-};
-var Zurbo_renderLegs = function() {
-  Canvas_sceneContext.save();
-  Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
-  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
-  Zurbo_renderLeg(-1);
-  Zurbo_renderLeg(1);
-  Canvas_sceneContext.restore();
-};
-
-var Zurbo_renderLeg = function(side) {
-  var gradient;
-  var offset = -1 * side * Zurbo_legSpacing/2;
-  Canvas_sceneContext.save();
-  Canvas_sceneContext.translate(0, 0);
-  Canvas_sceneContext.rotate(Zurbo_vm_legs_angle * side);
-  Canvas_sceneContext.beginPath();
-  Canvas_sceneContext.moveTo(0, 0);
-  Canvas_sceneContext.bezierCurveTo(-40, Zurbo_vm_body_radius+Zurbo_vm_legs_length+20, 40, Zurbo_vm_body_radius+Zurbo_vm_legs_length+20, 0, 0);
-  Canvas_sceneContext.fillStyle = Zurbo_bodyColor[2];
-  Canvas_sceneContext.fill();
-
-  Canvas_sceneContext.beginPath();
-  Canvas_sceneContext.fillStyle = Zurbo_bodyColor[0];
-  Canvas_sceneContext.fillRect(-7, 20, 14, 30);
-
-
-
-  Canvas_sceneContext.restore();
-};
-
-var Zurbo_renderBodyAndHead = function() {
-  Canvas_sceneContext.save();
-
-  Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
-  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
-
-  Canvas_sceneContext.rotate(Zurbo_vm_body_angle);
-  Canvas_sceneContext.translate(-50, -150);
-  Canvas_sceneContext.drawImage(Canvas_zurboSpriteCanvas, 0, 0);
-  Canvas_sceneContext.restore();
-};
-
-var Zurbo_renderFace = function() {
-  if (Math.abs(Zurbo_vm_body_angle) < Math.PI*0.6) {
-    Zurbo_renderEyes();
+  if (Zurbo_isRunning()) {
+    spriteIndex = Math.round(Zurbo_spriteIndex % 3) + 4;
   }
-};
+  else {
+    spriteIndex = Math.round(Zurbo_spriteIndex % 3);
+  }
 
-var Zurbo_renderEyes = function() {
-  
-  Zurbo_renderEye(-1);
-  Zurbo_renderEye(1);
-  
-};
-
-var Zurbo_renderEye = function(side) {
   Canvas_sceneContext.save();
-
   Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
-  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
 
-  Canvas_sceneContext.rotate(Zurbo_vm_body_angle);
-  Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_body_head_distance));
-  Canvas_sceneContext.scale(side, 1);
   
-  Canvas_sceneContext.beginPath();
-  Canvas_sceneContext.moveTo(-5, 0);
-  Canvas_sceneContext.quadraticCurveTo(-12, -15, -19, 0);
-  Canvas_sceneContext.strokeStyle = Zurbo_bodyColor[4];
-  Canvas_sceneContext.lineWidth = 3;
-  Canvas_sceneContext.stroke();
+  Canvas_sceneContext.scale(-1 * Zurbo_faceDirection * 2, 2);
+  Canvas_sceneContext.translate(-32, 0);
 
-
+  Canvas_sceneContext.drawImage(Canvas_staticSpriteCanvas, spriteIndex * 64, 0, 64, 52, 0, 0, 64, 52);
   Canvas_sceneContext.restore();
+
 };
+
+// var Zurbo_renderHorn = function() {
+//   Canvas_sceneContext.save();
+//   Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
+//   Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
+//   Canvas_sceneContext.rotate(Zurbo_vm_body_angle);
+//   Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_head_radius + Zurbo_vm_body_head_distance));
+
+
+//   Canvas_sceneContext.beginPath();
+//   Canvas_sceneContext.moveTo(-1 * Zurbo_vm_head_horn_radius, 0);
+//   Canvas_sceneContext.lineTo(Zurbo_vm_head_horn_radius, 0);
+//   Canvas_sceneContext.lineTo(0, -1 * Zurbo_vm_head_horn_length);
+//   Canvas_sceneContext.fillStyle = Zurbo_bodyColor[0];
+//   Canvas_sceneContext.fill();
+//   Canvas_sceneContext.restore();
+// };
+
+// var Zurbo_renderShadow = function() {
+//   var shadowRadius = Zurbo_vm_body_radius * 0.18 * Game_viewportHeight / (Game_viewportHeight-Zurbo_vm_body_y);
+//   Canvas_sceneContext.save();
+//   Canvas_sceneContext.beginPath();
+//   Canvas_sceneContext.globalAlpha = 0.2;
+//   Canvas_sceneContext.translate(Game_viewportWidth/2, Game_viewportHeight-70);
+//   Canvas_sceneContext.scale(1, 0.2);
+//   Canvas_sceneContext.arc(0, 0, shadowRadius, 0, Math.PI*2, false);
+
+//   //Canvas_sceneContext.shadowBlur = 10;
+//   //Canvas_sceneContext.shadowColor = 'black';
+//   Canvas_sceneContext.fillStyle = 'black';
+
+//   Canvas_sceneContext.fill();
+//   Canvas_sceneContext.restore();
+// };
+// var Zurbo_renderLegs = function() {
+//   Canvas_sceneContext.save();
+//   Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
+//   Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
+//   Zurbo_renderLeg(-1);
+//   Zurbo_renderLeg(1);
+//   Canvas_sceneContext.restore();
+// };
+
+// var Zurbo_renderLeg = function(side) {
+//   var gradient;
+//   var offset = -1 * side * Zurbo_legSpacing/2;
+//   Canvas_sceneContext.save();
+//   Canvas_sceneContext.translate(0, 0);
+//   Canvas_sceneContext.rotate(Zurbo_vm_legs_angle * side);
+//   Canvas_sceneContext.beginPath();
+//   Canvas_sceneContext.moveTo(0, 0);
+//   Canvas_sceneContext.bezierCurveTo(-40, Zurbo_vm_body_radius+Zurbo_vm_legs_length+20, 40, Zurbo_vm_body_radius+Zurbo_vm_legs_length+20, 0, 0);
+//   Canvas_sceneContext.fillStyle = Zurbo_bodyColor[2];
+//   Canvas_sceneContext.fill();
+
+//   Canvas_sceneContext.beginPath();
+//   Canvas_sceneContext.fillStyle = Zurbo_bodyColor[0];
+//   Canvas_sceneContext.fillRect(-7, 20, 14, 30);
+
+
+
+//   Canvas_sceneContext.restore();
+// };
+
+// var Zurbo_renderBodyAndHead = function() {
+//   Canvas_sceneContext.save();
+
+//   Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
+//   Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
+
+//   Canvas_sceneContext.rotate(Zurbo_vm_body_angle);
+//   Canvas_sceneContext.translate(-50, -150);
+//   Canvas_sceneContext.drawImage(Canvas_zurboSpriteCanvas, 0, 0);
+//   Canvas_sceneContext.restore();
+// };
+
+// var Zurbo_renderFace = function() {
+//   if (Math.abs(Zurbo_vm_body_angle) < Math.PI*0.6) {
+//     Zurbo_renderEyes();
+//   }
+// };
+
+// var Zurbo_renderEyes = function() {
+  
+//   Zurbo_renderEye(-1);
+//   Zurbo_renderEye(1);
+  
+// };
+
+// var Zurbo_renderEye = function(side) {
+//   Canvas_sceneContext.save();
+
+//   Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_vm_body_y);
+//   Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_legs_length + Zurbo_vm_body_radius));
+
+//   Canvas_sceneContext.rotate(Zurbo_vm_body_angle);
+//   Canvas_sceneContext.translate(0, -1 * (Zurbo_vm_body_head_distance));
+//   Canvas_sceneContext.scale(side, 1);
+  
+//   Canvas_sceneContext.beginPath();
+//   Canvas_sceneContext.moveTo(-5, 0);
+//   Canvas_sceneContext.quadraticCurveTo(-12, -15, -19, 0);
+//   Canvas_sceneContext.strokeStyle = Zurbo_bodyColor[4];
+//   Canvas_sceneContext.lineWidth = 3;
+//   Canvas_sceneContext.stroke();
+
+
+//   Canvas_sceneContext.restore();
+// };
 
 var Zurbo_update = function(timeDiff) {
   // x
   if (Zurbo_direction !== 0) {
-    Zurbo_vm_body_x += Zurbo_runSpeed * Zurbo_direction * timeDiff/1000;
+    Zurbo_vm_body_x += Zurbo_runSpeed * Zurbo_direction * timeDiff;
   }
 
   // y
   // v = a t
-  Zurbo_verticalVelocity += (Zurbo_gravity) * (timeDiff/1000);
+  Zurbo_verticalVelocity += (Zurbo_gravity) * (timeDiff);
 
   //console.log(Zurbo_verticalVelocity);
 
   // d = v t
   if (Zurbo_verticalVelocity !== 0) {
-    Zurbo_vm_body_y += Zurbo_verticalVelocity * (timeDiff/1000);
+    Zurbo_vm_body_y += Zurbo_verticalVelocity * (timeDiff);
   }
 
   // landed on the ground
-  if (Zurbo_vm_body_y > Game_viewportHeight - 70) {
-    Zurbo_vm_body_y = Game_viewportHeight - 70;
+  if (Zurbo_vm_body_y > Game_viewportHeight - 203) {
+    Zurbo_vm_body_y = Game_viewportHeight - 203;
     Zurbo_verticalVelocity = 0;
     Zurbo_jumpsLeft = 2;
   }
@@ -346,10 +370,15 @@ var Zurbo_update = function(timeDiff) {
   }
 
   Zurbo_updateBodyAngle();
+  Zurbo_updateSpriteIndex(timeDiff);
+};
+
+var Zurbo_updateSpriteIndex = function(timeDiff) {
+  Zurbo_spriteIndex += Zurbo_spriteVelocity * timeDiff;
 };
 
 var Zurbo_isRunning = function() {
-  return Zurbo_aDown || Zurbo_dDown;
+  return !Zurbo_isInAir() && (Zurbo_aDown || Zurbo_dDown);
 };
 
 var Zurbo_isInAir = function() {

@@ -17,7 +17,7 @@ var Level1_grid = [
     [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,   4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
     [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,   4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
     [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,   4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-    [4, 0, 0, 0, 2, 1, 3, 0, 0, 0, 0, 0, 0, 0,   4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+    [4, 0, 2, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0,   4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
   ]
 ];
@@ -32,8 +32,8 @@ var Level1_blocks = [
     render: function() {
       var colors = ['#749f29', '#84a33b', '#718612', '#9fc236', '#2b4400', '#94a729', '#acd440'];
 
-      for (var x=0; x<100; x++) {
-        for (var y=0; y<100; y++) {
+      for (var x=0; x<100; x+=2) {
+        for (var y=0; y<100; y+=2) {
           var color;
 
           if (x < 3 || y < 3) {
@@ -42,8 +42,8 @@ var Level1_blocks = [
           else {
             color = colors[Math.round(Math.random()*(colors.length-1))];
           }
-          Canvas_blocksSpriteContext.fillStyle = color;
-          Canvas_blocksSpriteContext.fillRect(x, y, 1, 1);
+          Canvas_blockSpriteContext.fillStyle = color;
+          Canvas_blockSpriteContext.fillRect(x, y, 2, 2);
         }
       }
 
@@ -53,23 +53,23 @@ var Level1_blocks = [
   // 2 - slope up grass
   {
     render: function() {
-      Canvas_blocksSpriteContext.save();
-      Canvas_blocksSpriteContext.beginPath();
-      Canvas_blocksSpriteContext.moveTo(0, 100);
-      Canvas_blocksSpriteContext.lineTo(100, 0);
-      Canvas_blocksSpriteContext.lineTo(100, 100);
-      Canvas_blocksSpriteContext.fillStyle = Canvas_blocksSpriteContext.createPattern(Canvas_blocksSpriteCanvas, "repeat");
-      Canvas_blocksSpriteContext.translate(-1*1*100, 0);
-      Canvas_blocksSpriteContext.fill();
-      Canvas_blocksSpriteContext.restore();
+      Canvas_blockSpriteContext.save();
+      Canvas_blockSpriteContext.beginPath();
+      Canvas_blockSpriteContext.moveTo(0, 100);
+      Canvas_blockSpriteContext.lineTo(100, 0);
+      Canvas_blockSpriteContext.lineTo(100, 100);
+      Canvas_blockSpriteContext.fillStyle = Canvas_blockSpriteContext.createPattern(Canvas_blockSpriteCanvas, "repeat");
+      Canvas_blockSpriteContext.translate(-1*1*100, 0);
+      Canvas_blockSpriteContext.fill();
+      Canvas_blockSpriteContext.restore();
 
       // top line
-      Canvas_blocksSpriteContext.beginPath();
-      Canvas_blocksSpriteContext.strokeStyle = '#47660c';
-      Canvas_blocksSpriteContext.lineWidth = 2;
-      Canvas_blocksSpriteContext.moveTo(0, 100);
-      Canvas_blocksSpriteContext.lineTo(100, 0);
-      Canvas_blocksSpriteContext.stroke();
+      Canvas_blockSpriteContext.beginPath();
+      Canvas_blockSpriteContext.strokeStyle = '#47660c';
+      Canvas_blockSpriteContext.lineWidth = 2;
+      Canvas_blockSpriteContext.moveTo(0, 100);
+      Canvas_blockSpriteContext.lineTo(100, 0);
+      Canvas_blockSpriteContext.stroke();
 
 
     }
@@ -77,30 +77,30 @@ var Level1_blocks = [
   // 3 - slope down grass
   {
     render: function() {
-      Canvas_blocksSpriteContext.save();
-      Canvas_blocksSpriteContext.beginPath();
-      Canvas_blocksSpriteContext.moveTo(0, 0);
-      Canvas_blocksSpriteContext.lineTo(100, 100);
-      Canvas_blocksSpriteContext.lineTo(0, 100);
-      Canvas_blocksSpriteContext.fillStyle = Canvas_blocksSpriteContext.createPattern(Canvas_blocksSpriteCanvas, "repeat");
-      Canvas_blocksSpriteContext.translate(-1*1*100, 0);
-      Canvas_blocksSpriteContext.fill();
-      Canvas_blocksSpriteContext.restore();
+      Canvas_blockSpriteContext.save();
+      Canvas_blockSpriteContext.beginPath();
+      Canvas_blockSpriteContext.moveTo(0, 0);
+      Canvas_blockSpriteContext.lineTo(100, 100);
+      Canvas_blockSpriteContext.lineTo(0, 100);
+      Canvas_blockSpriteContext.fillStyle = Canvas_blockSpriteContext.createPattern(Canvas_blockSpriteCanvas, "repeat");
+      Canvas_blockSpriteContext.translate(-1*1*100, 0);
+      Canvas_blockSpriteContext.fill();
+      Canvas_blockSpriteContext.restore();
 
       // top line
-      Canvas_blocksSpriteContext.beginPath();
-      Canvas_blocksSpriteContext.strokeStyle = '#47660c';
-      Canvas_blocksSpriteContext.lineWidth = 2;
-      Canvas_blocksSpriteContext.moveTo(0, 0);
-      Canvas_blocksSpriteContext.lineTo(100, 100);
-      Canvas_blocksSpriteContext.stroke();
+      Canvas_blockSpriteContext.beginPath();
+      Canvas_blockSpriteContext.strokeStyle = '#47660c';
+      Canvas_blockSpriteContext.lineWidth = 2;
+      Canvas_blockSpriteContext.moveTo(0, 0);
+      Canvas_blockSpriteContext.lineTo(100, 100);
+      Canvas_blockSpriteContext.stroke();
     }
   },
   // 4 - green blob
   {
     render: function() {
-      Canvas_blocksSpriteContext.fillStyle = 'green';
-      Canvas_blocksSpriteContext.fillRect(0, 0, 100, 100);
+      Canvas_blockSpriteContext.fillStyle = 'green';
+      Canvas_blockSpriteContext.fillRect(0, 0, 100, 100);
     }
   }
 ];

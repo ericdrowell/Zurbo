@@ -4,6 +4,8 @@ var Game_viewportHeight = 600;
 var Game_lastTime;
 var Game_mouseX;
 var Game_mouseY;
+var Game_pixelation = 20;
+var Game_pixelationVelocity = 24; // pixels / second
 
 var Game_init = function() {
   Game_mouseX = document.body.clientWidth/2;
@@ -14,9 +16,10 @@ var Game_init = function() {
   Canvas_init();
   Music_init();
   SoundEffects_init();
+  Sprites_init();
   Zurbo_init();
-  
-  Level_render();
+  Level_init();
+
   Game_listen();
   Game_loop();
 };
@@ -90,6 +93,9 @@ var Game_render = function() {
 
   //Canvas_pixelate(Canvas_sceneContext, 3);
 
+  Canvas_pixelate(Canvas_sceneCanvas, Canvas_sceneContext, Math.round(Game_pixelation));
+
+
   var sceneUrl = Canvas_sceneCanvas.toDataURL();
 
   Game_viewport.style.backgroundImage = 'url(' + sceneUrl + ')';
@@ -100,9 +106,16 @@ var Game_update = function() {
   if (!Game_lastTime) {
     Game_lastTime = now;
   }
-  var timeDiff = now - Game_lastTime;
+  var timeDiff = (now - Game_lastTime)/1000;
 
   Zurbo_update(timeDiff);
+
+  if (Game_pixelation > 1) {
+    Game_pixelation -= timeDiff * Game_pixelationVelocity;
+    if (Game_pixelation < 1) {
+      Game_pixelation = 1;
+    }
+  }
 
   Game_lastTime = now;
 };
