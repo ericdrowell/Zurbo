@@ -51,7 +51,7 @@ var Canvas_init = function() {
 
   //Canvas_debug(Canvas_foregroundCanvas);
   //Canvas_debug(Canvas_blocksSpriteCanvas);
-  Canvas_debug(Canvas_staticSpriteCanvas);
+  //Canvas_debug(Canvas_staticSpriteCanvas);
 };
 
 var Canvas_debug = function(canvas) {

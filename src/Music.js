@@ -1,6 +1,6 @@
 var Music_audio;
-var Music_playing = false;
 var Music_ready = false;
+var Music_playing = false;
 
 // This music has been exported by SoundBox. You can use it with
 // http://sb.bitsnbites.eu/player-small.js in your own product.
@@ -331,6 +331,7 @@ var Music_init = function() {
         type: 'audio/wav'
       }));
       Music_audio.loop = true;
+      //Music_audio.autoplay = true;
 
       console.log('music is ready.');
       Music_ready = true;
@@ -340,6 +341,6 @@ var Music_init = function() {
 };
 
 var Music_play = function() {
-   Music_audio.play();
-   Muic_playing = true;
+  Music_audio.play();
+  Music_playing = true;
 };

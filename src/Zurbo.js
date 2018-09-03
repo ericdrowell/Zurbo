@@ -27,9 +27,9 @@ var Zurbo_listen = function() {
   document.addEventListener('click', function() {
     SoundEffects_play('laser');
 
-    if (Music_ready && !Music_playing) {
-      Music_play();
-    }
+    // if (Music_ready && !Music_playing) {
+    //   Music_play();
+    // }
     
   });
 

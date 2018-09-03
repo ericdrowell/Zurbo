@@ -5,6 +5,11 @@ var Level_init = function() {
   Level_renderGrid();
 };
 
+var Level_render = function() {
+  Canvas_sceneContext.drawImage(Canvas_backgroundCanvas, -1 * Zurbo_x, 0);
+  Canvas_sceneContext.drawImage(Canvas_foregroundCanvas, -1 * Zurbo_x, 0);
+};
+
 var Level_renderBlocks = function(){
   Level1_blocks.forEach(function(block, n) {
     Canvas_blockSpriteContext.save();
