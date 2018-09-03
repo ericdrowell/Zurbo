@@ -5,7 +5,7 @@ var Text_render = function() {
       Text_renderLine('Loading...', 80, 0);
       break;
     case GAME_TITLE:
-      Text_renderLine('Press [Enter] to begin...', 80, 0);
+      Text_renderLine('Press [Enter] to continue...', 80, 0);
       break;
     case GAME_INTRO_1:
       Text_renderLine('Wake up Zurbo...', 80, 0);
