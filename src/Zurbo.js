@@ -112,7 +112,7 @@ var Zurbo_listen = function() {
 var Zurbo_render = function() {
   var spriteIndex;
 
-  console.log(Zurbo_x);
+  //console.log(Zurbo_x);
 
   if (Zurbo_isRunning()) {
     spriteIndex = Math.round(Zurbo_spriteIndex % 3) + 4;
@@ -139,6 +139,7 @@ var Zurbo_render = function() {
 var Zurbo_renderDebugPosition = function() {
   Canvas_sceneContext.fillStyle = 'red';
   Canvas_sceneContext.fillRect(-2, -2, 4, 4);  
+  Canvas_sceneContext.fillRect(-2, -2-104, 4, 4); 
 };
 
 var Zurbo_update = function(timeDiff) {
@@ -186,16 +187,30 @@ var Zurbo_updatePosition = function(timeDiff) {
   if (Zurbo_verticalVelocity !== 0) {
     Zurbo_y += Zurbo_verticalVelocity * (timeDiff);
 
-    block = Level_getBlock(Zurbo_x, Zurbo_y);
+    
     // if hitting a block
-    if (block !== undefined && block !== 0) {
-      // if falling down
-      if (Zurbo_y > lastZurboY) {
+
+  
+    // if hit the floor
+    if (Zurbo_y > lastZurboY) {
+      block = Level_getBlock(Zurbo_x, Zurbo_y);
+      if (block) {
         Zurbo_y -= Zurbo_y % 100;
         Zurbo_verticalVelocity = 0;
         Zurbo_jumpsLeft = 2;
       }
     }
+    // if hit ceiling
+    else if (Zurbo_y < lastZurboY) {
+      block = Level_getBlock(Zurbo_x, Zurbo_y-104);
+      if (block) {
+        //console.log('hit head');
+        Zurbo_y += (100 - (Zurbo_y-104) % 100);
+        Zurbo_verticalVelocity = 0;
+
+      }
+    }
+    
   }
 
   // landed on the ground
