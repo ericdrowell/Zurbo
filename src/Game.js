@@ -172,7 +172,10 @@ var Game_update = function() {
   }
   var timeDiff = (now - Game_lastTime)/1000;
 
-  Zurbo_update(timeDiff);
+  if (Game_state === GAME_PLAYING) {
+    Zurbo_update(timeDiff);
+  }
+
   Zurbo_updatePixelation(timeDiff);
 
   Game_lastTime = now;
@@ -210,6 +213,7 @@ var Game_setState = function(state) {
       Game_endPixelation = 1;
       Game_pixelationVelocity = 48;
       Zurbo_y = -200;
+      SoundEffects_play('start');
       break;
   }
 

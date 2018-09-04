@@ -1,5 +1,4 @@
 var Text_render = function() {
-  debugger;
   switch (Game_state) {
     case GAME_LOADING:
       Text_renderLine('Loading...', 80, 0);
@@ -11,7 +10,7 @@ var Text_render = function() {
       Text_renderLine('Wake up Zurbo...', 80, 0);
       break;
     case GAME_INTRO_2:
-      Text_renderLine('I\'ve been watching you...', 80, -60);
+      Text_renderLine('I\'ve been watching you', 80, -60);
       Text_renderLine('And your world...', 80, 60);
       break;
     case GAME_INTRO_3:
@@ -25,7 +24,7 @@ var Text_render = function() {
       break;
     case GAME_INSTRUCTIONS:
       Text_renderLine('[WASD] - move around', 80, -130);
-      Text_renderLine('[Space] - jump', 80, 0);
+      Text_renderLine('[Space] - jump and double jump', 80, 0);
       Text_renderLine('Mouse - bow blaster', 80, 130);
       break;
   }
