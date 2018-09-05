@@ -34,6 +34,8 @@ var Game_init = function() {
   Zurbo_init();
   Level_init();
 
+  Game_syncSceneSize();
+
   Game_listen();
   Game_loop();
   Game_waitForReady();
@@ -52,6 +54,35 @@ var Game_waitForReady = function() {
       Game_onReady(); 
     }
   }, 17);
+};
+
+var Game_syncSceneSize = function() {
+  var w = window,
+      d = document,
+      e = d.documentElement,
+      g = d.getElementsByTagName('body')[0],
+      width = w.innerWidth || e.clientWidth || g.clientWidth,
+      height = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+  // wide window
+  if (width/height >= Game_viewportWidth/Game_viewportHeight) {
+    Canvas_sceneCanvas.style.width = 'auto';
+    Canvas_sceneCanvas.style.height = '100%';
+    Canvas_sceneCanvas.style.top = 'auto';
+    Canvas_sceneCanvas.style.left = '50%';
+    Canvas_sceneCanvas.style.transform = 'translateX(-50%)';     
+  }
+  // tall window
+  else {
+    Canvas_sceneCanvas.style.width = '100%';
+    Canvas_sceneCanvas.style.height = 'auto';
+    Canvas_sceneCanvas.style.top = '50%';
+    Canvas_sceneCanvas.style.left = 'auto';
+    Canvas_sceneCanvas.style.transform = 'translateY(-50%)';    
+ 
+  }
+
+
 };
 
 
@@ -87,6 +118,10 @@ var Game_mouseToCanvas = function(point) {
 };
 
 var Game_listen = function() {
+  window.addEventListener('resize', function() {
+    Game_syncSceneSize();
+  });
+
   document.body.addEventListener('mousemove', function(evt) {
     Game_mouseX = evt.clientX;
     Game_mouseY = evt.clientY;
@@ -160,9 +195,9 @@ var Game_render = function() {
   Canvas_pixelate(Canvas_sceneCanvas, Canvas_sceneContext, Math.round(Game_pixelation));
   //Canvas_pixelate(Canvas_sceneCanvas, Canvas_sceneContext, 5);
 
-  var sceneUrl = Canvas_sceneCanvas.toDataURL();
+  //var sceneUrl = Canvas_sceneCanvas.toDataURL();
 
-  Game_viewport.style.backgroundImage = 'url(' + sceneUrl + ')';
+  //Game_viewport.style.backgroundImage = 'url(' + sceneUrl + ')';
 };
 
 var Game_update = function() {

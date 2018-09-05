@@ -3,6 +3,8 @@ var Level_width = 14000;
 var Level_grid;
 var Level_blocks;
 
+var Level_levels = [];
+
 var Level_init = function() {
   Level_grid = Level1_grid;
   Level_blocks = Level1_blocks;

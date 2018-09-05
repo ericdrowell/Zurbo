@@ -39,6 +39,7 @@ var Canvas_init = function() {
   // scene composite
   Canvas_sceneCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
   Canvas_sceneContext = Canvas_getContext(Canvas_sceneCanvas);
+  Game_viewport.appendChild(Canvas_sceneCanvas);
 
   Canvas_staticSpriteCanvas = Canvas_createCanvas(512, 52);
   Canvas_staticSpriteContext = Canvas_getContext(Canvas_staticSpriteCanvas);
@@ -49,9 +50,7 @@ var Canvas_init = function() {
   Canvas_tempCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
   Canvas_tempContext = Canvas_getContext(Canvas_tempCanvas);
 
-  //Canvas_debug(Canvas_foregroundCanvas);
-  //Canvas_debug(Canvas_blocksSpriteCanvas);
-  //Canvas_debug(Canvas_staticSpriteCanvas);
+  //Canvas_debug(Canvas_sceneCanvas);
 };
 
 var Canvas_debug = function(canvas) {
