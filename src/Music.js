@@ -333,7 +333,7 @@ var Music_init = function() {
       Music_audio.loop = true;
       //Music_audio.autoplay = true;
 
-      console.log('music is ready.');
+      console.log('music is ready');
       Music_ready = true;
     }
   }, 17);

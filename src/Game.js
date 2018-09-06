@@ -43,11 +43,10 @@ var Game_init = function() {
 
 var Game_onReady = function() {
   Game_setState(GAME_TITLE);
-  console.log('game ready.');
+  console.log('game is ready');
 };
 
 var Game_waitForReady = function() {
-  console.log('Waiting for game to be ready...');
   var interval = setInterval(function() {
     if (Music_ready) {
       clearInterval(interval);
@@ -163,11 +162,10 @@ var Game_listen = function() {
 var Game_setupDom = function() {
   var html = document.querySelector('html');
   var body = document.querySelector('body');
+  html.style.backgroundColor = 'black';
+  body.style.backgroundColor = 'black';
+
   Game_viewport = document.getElementById('viewport');
-  Game_viewport.style.backgroundSize = 'contain';
-  Game_viewport.style.backgroundColor = 'black';
-  Game_viewport.style.backgroundRepeat = 'no-repeat';
-  Game_viewport.style.backgroundPosition = 'center';
 
   DOM_makeElementFullScreen(html);
   DOM_makeElementFullScreen(body);

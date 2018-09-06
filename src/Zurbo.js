@@ -123,15 +123,10 @@ var Zurbo_render = function() {
 
   Canvas_sceneContext.save();
   Canvas_sceneContext.translate(Game_viewportWidth/2, Zurbo_y);
-
-  
   //Zurbo_renderDebugPosition();
-
-  
-  Canvas_sceneContext.scale(-1 * Zurbo_faceDirection * 2, 2);
-  Canvas_sceneContext.translate(-32, -52);
-
-  Canvas_sceneContext.drawImage(Canvas_staticSpriteCanvas, spriteIndex * 64, 0, 64, 52, 0, 0, 64, 52);
+  Canvas_sceneContext.scale(-1 * Zurbo_faceDirection * 4, 4);
+  Canvas_sceneContext.translate(-16, -26);
+  Canvas_sceneContext.drawImage(Canvas_staticSpriteCanvas, spriteIndex * 32, 0, 32, 26, 0, 0, 32, 26);
   Canvas_sceneContext.restore();
 
 };
@@ -152,30 +147,45 @@ var Zurbo_update = function(timeDiff) {
 var Zurbo_updatePosition = function(timeDiff) {
   var lastZurboX = Zurbo_x;
   var lastZurboY = Zurbo_y;
-  var block;
+  var xAdjusted = false;
 
   // x
   if (Zurbo_direction !== 0) {
     Zurbo_x += Zurbo_runSpeed * Zurbo_direction  * timeDiff;
  
-
-    block = Level_getBlock(Zurbo_x, Zurbo_y-1);
     // if hitting a block
-    if (block !== undefined && block !== 0) {
-
+    if (Level_isBlock(Zurbo_x, Zurbo_y-1)) {
       // if was moving right
       if (Zurbo_x > lastZurboX) {
-        //Zurbo_x += Level_getBlockCol(x)
         Zurbo_x -= (Zurbo_x % 100 + 1);
+        xAdjusted = true;
       }
       // if was moving left
       else if (Zurbo_x < lastZurboX) {
         Zurbo_x += (100 - (Zurbo_x % 100));
+        xAdjusted = true;
       }
-      
-      //console.log('hit block');
+    }
+
+    // check top point
+    if (!xAdjusted) {
+      // if hitting a block
+      if (Level_isBlock(Zurbo_x, Zurbo_y-100)) {
+        // if was moving right
+        if (Zurbo_x > lastZurboX) {
+          Zurbo_x -= (Zurbo_x % 100 + 1);
+          xAdjusted = true;
+        }
+        // if was moving left
+        else if (Zurbo_x < lastZurboX) {
+          Zurbo_x += (100 - (Zurbo_x % 100));
+          xAdjusted = true;
+        }
+      }
     }
   }
+
+
 
   // y
   // v = a t
@@ -193,8 +203,7 @@ var Zurbo_updatePosition = function(timeDiff) {
   
     // if hit the floor
     if (Zurbo_y > lastZurboY) {
-      block = Level_getBlock(Zurbo_x, Zurbo_y);
-      if (block) {
+      if (Level_isBlock(Zurbo_x, Zurbo_y)) {
         Zurbo_y -= Zurbo_y % 100;
         Zurbo_verticalVelocity = 0;
         Zurbo_jumpsLeft = 2;
@@ -202,8 +211,7 @@ var Zurbo_updatePosition = function(timeDiff) {
     }
     // if hit ceiling
     else if (Zurbo_y < lastZurboY) {
-      block = Level_getBlock(Zurbo_x, Zurbo_y-104);
-      if (block) {
+      if (Level_isBlock(Zurbo_x, Zurbo_y-104)) {
         //console.log('hit head');
         Zurbo_y += (100 - (Zurbo_y-104) % 100);
         Zurbo_verticalVelocity = 0;
