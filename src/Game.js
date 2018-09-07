@@ -33,6 +33,7 @@ var Game_init = function() {
   Sprites_init();
   Zurbo_init();
   Level_init();
+  Mob_init();
 
   Game_syncSceneSize();
 
@@ -184,6 +185,8 @@ var Game_render = function() {
 
   if (Game_state === GAME_PLAYING) {
     Level_render();
+    
+    Mob_render();
     Zurbo_render();
   }
   else {
@@ -207,6 +210,7 @@ var Game_update = function() {
 
   if (Game_state === GAME_PLAYING) {
     Zurbo_update(timeDiff);
+    Mob_update(timeDiff);
   }
 
   Zurbo_updatePixelation(timeDiff);
@@ -223,7 +227,7 @@ var Game_setState = function(state) {
     case GAME_INTRO_1:
       Game_pixelation = 20;
       Game_endPixelation = 5;
-      Music_play();
+      //Music_play();
       break;
     case GAME_INTRO_2:
       Game_pixelation = 20;
