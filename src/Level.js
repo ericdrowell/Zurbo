@@ -23,12 +23,7 @@ var Level_getPositionFromRowCol = function(row, col) {
 var Level_getBlockIndex = function(x, y) {
   var col = Math.round((x-50) / 100);
   var row = Math.round((y-50) / 100);
-
-  //console.log(row, col);
   var blockIndex = Level_grid[3][row] && Level_grid[3][row][col];
-
-  //console.log(col + '-' + row + ', ' + blockIndex);
-
   return blockIndex;
 };
 
@@ -37,24 +32,8 @@ var Level_isBlock = function(x, y) {
   return blockIndex && Number.isInteger(blockIndex);
 };
 
-var Level_moveObject = function(x, startX, y, test) {
-  if (Level_isBlock(x, y) === test) {
-
-    // if was moving right
-    if (x > startX) {
-      x -= (x % 100 + 1);
-    }
-    // if was moving left
-    else if (x < startX) {
-      x += (100 - (x % 100));
-    }
-  }
-
-  return x;
-};
-
 var Level_getBlockLeft = function(x) {
-  return x - (x % 100);
+  return x - (x % 100) - 1;
 };
 
 var Level_getBlockRight = function(x) {

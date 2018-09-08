@@ -6,7 +6,7 @@ var Mob_init = function() {
     rowBlock.forEach(function(blockIndex, c) {
       if (blockIndex === 'A' || blockIndex === 'M') {
         pos = Level_getPositionFromRowCol(r, c);
-        console.log(pos);
+        //console.log(pos);
         Mob_mobs.push({
           type: blockIndex,
           spriteIndex: Math.round(Math.random() * 3),
@@ -25,6 +25,9 @@ var Mob_render = function() {
 
     Canvas_sceneContext.save();
     Canvas_sceneContext.translate(mob.x - Zurbo_x + Game_viewportWidth/2, mob.y+1);
+
+    //Mob_renderDebugPosition();
+
     Canvas_sceneContext.scale(-1 * mob.direction * 4, 4);
     Canvas_sceneContext.translate(-16, -26);
     Canvas_sceneContext.drawImage(Canvas_staticSpriteCanvas, spriteIndex * 32, 26, 32, 26, 0, 0, 32, 26);
@@ -32,6 +35,24 @@ var Mob_render = function() {
 
     Canvas_sceneContext.restore();
   });
+};
+
+var Mob_renderDebugPosition = function() {
+  Canvas_sceneContext.fillStyle = 'red';
+  Canvas_sceneContext.fillRect(-2, -2, 4, 4);  
+};
+
+var Mob_getMob = function(x, y) {
+  var mob;
+  for (var n=0; n<Mob_mobs.length; n++) {
+    mob = Mob_mobs[n];
+    //console.log(x, y, mob.x, mob.y);
+    if (x > mob.x - 32 && x < mob.x + 32 && y > mob.y - 54 - 54 && y < mob.y -54 + 54) {
+      return mob;
+    }
+  }
+
+  return null;
 };
 
 var Mob_update = function(timeDiff) {

@@ -19,6 +19,9 @@ var Canvas_blockSpriteContext;
 var Canvas_tempCanvas;
 var Canvas_tempContext;
 
+var Canvas_projectileCanvas;
+var Canvas_projectileContext;
+
 var Canvas_init = function() {
   // 0 - farthest canvas, doesn't move
   Canvas_backgroundCanvas = Canvas_createCanvas(Level_width, Game_viewportHeight);
@@ -41,7 +44,7 @@ var Canvas_init = function() {
   Canvas_sceneContext = Canvas_getContext(Canvas_sceneCanvas);
   Game_viewport.appendChild(Canvas_sceneCanvas);
 
-  Canvas_staticSpriteCanvas = Canvas_createCanvas(512, 52);
+  Canvas_staticSpriteCanvas = Canvas_createCanvas(256, 106);
   Canvas_staticSpriteContext = Canvas_getContext(Canvas_staticSpriteCanvas);
 
   Canvas_blockSpriteCanvas = Canvas_createCanvas(1000, 100);
@@ -50,7 +53,10 @@ var Canvas_init = function() {
   Canvas_tempCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
   Canvas_tempContext = Canvas_getContext(Canvas_tempCanvas);
 
-  //Canvas_debug(Canvas_sceneCanvas);
+  Canvas_projectileCanvas = Canvas_createCanvas(Projectile_canvasSize, Projectile_canvasSize);
+  Canvas_projectileContext = Canvas_getContext(Canvas_projectileCanvas);
+
+  Canvas_debug(Canvas_staticSpriteCanvas);
 };
 
 var Canvas_debug = function(canvas) {
@@ -90,14 +96,14 @@ function Canvas_pixelate(canvas, context, pixelation) {
   // As smoothing is off the result will be pixelated
   //context.scale(size, size);
 
-  Canvas_tempContext.clearRect(0, 0, Game_viewportWidth, Game_viewportHeight);
+  Canvas_tempContext.clearRect(0, 0, canvas.width, canvas.height);
   Canvas_tempContext.save();
   Canvas_tempContext.scale(1/pixelation, 1/pixelation);
-  Canvas_tempContext.drawImage(canvas, 0, 0, Game_viewportWidth, Game_viewportHeight);
+  Canvas_tempContext.drawImage(canvas, 0, 0, canvas.width, canvas.height);
   Canvas_tempContext.restore();
 
-  context.clearRect(0, 0, Game_viewportWidth, Game_viewportHeight);
-  context.drawImage(Canvas_tempCanvas, 0, 0, Game_viewportWidth/pixelation, Game_viewportHeight/pixelation, 0, 0, Game_viewportWidth, Game_viewportHeight);
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(Canvas_tempCanvas, 0, 0, canvas.width/pixelation, canvas.height/pixelation, 0, 0, canvas.width, canvas.height);
 }
 
 

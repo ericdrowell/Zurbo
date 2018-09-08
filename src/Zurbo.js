@@ -11,7 +11,7 @@ var Zurbo_verticalVelocity = 0; // pixels / second
 var Zurbo_jumpVelocity = -835;
 var Zurbo_spriteVelocity = 6; // sprites / second
 var Zurbo_spriteIndex = 0;
-var Zurbo_faceDirection = true;
+var Zurbo_faceDirection = 1;
 
 // Zurbo can jump once off the ground, and then in the air!
 var Zurbo_jumpsLeft = 0;
@@ -29,6 +29,35 @@ var Zurbo_init = function() {
 var Zurbo_listen = function() {
   document.addEventListener('click', function() {
     if (Game_state == GAME_PLAYING) {
+      var canvasPoint = Game_mouseToCanvas({
+        x: Game_mouseX,
+        y: Game_mouseY
+      });
+      //console.log(canvasPoint);
+
+      var x = Zurbo_x;
+      var y = Zurbo_y - 52;
+      var clickX = canvasPoint.x + Zurbo_x - Game_viewportWidth/2;
+      var clickY = canvasPoint.y;
+      var angle = Math.atan((clickY - y) / (clickX - x));
+
+      if (clickX >= x) {
+        //Zurbo_faceDirection = 1;
+      }
+      else {
+        angle += Math.PI;
+        //Zurbo_faceDirection = -1;
+      }
+
+      //console.log(angle);
+
+      Projectile_projectiles.push({
+        startX: x,
+        startY: y,
+        angle: angle,
+        magnitude: 30,
+        angleChangeSpeed: (Math.random() - 0.5)*0.4
+      });
       SoundEffects_play('laser');
     }
 
@@ -128,7 +157,6 @@ var Zurbo_render = function() {
   Canvas_sceneContext.translate(-16, -26);
   Canvas_sceneContext.drawImage(Canvas_staticSpriteCanvas, spriteIndex * 32, 0, 32, 26, 0, 0, 32, 26);
   Canvas_sceneContext.restore();
-
 };
 
 var Zurbo_renderDebugPosition = function() {
@@ -139,8 +167,6 @@ var Zurbo_renderDebugPosition = function() {
 
 var Zurbo_update = function(timeDiff) {
   Zurbo_updatePosition(timeDiff);
-
-  Zurbo_updateBodyAngle();
   Zurbo_updateSpriteIndex(timeDiff);
 };
 
@@ -156,13 +182,13 @@ var Zurbo_updatePosition = function(timeDiff) {
     // if hitting a block
     if (Level_isBlock(Zurbo_x, Zurbo_y-1)) {
       // if was moving right
-      if (Zurbo_x > lastZurboX) {
-        Zurbo_x -= (Zurbo_x % 100 + 1);
+      if (Zurbo_direction == 1) {
+        Zurbo_x = Level_getBlockLeft(Zurbo_x);
         xAdjusted = true;
       }
       // if was moving left
-      else if (Zurbo_x < lastZurboX) {
-        Zurbo_x += (100 - (Zurbo_x % 100));
+      else {
+        Zurbo_x = Level_getBlockRight(Zurbo_x);
         xAdjusted = true;
       }
     }
@@ -172,13 +198,13 @@ var Zurbo_updatePosition = function(timeDiff) {
       // if hitting a block
       if (Level_isBlock(Zurbo_x, Zurbo_y-100)) {
         // if was moving right
-        if (Zurbo_x > lastZurboX) {
-          Zurbo_x -= (Zurbo_x % 100 + 1);
+        if (Zurbo_direction == 1) {
+          Zurbo_x = Level_getBlockLeft(Zurbo_x);
           xAdjusted = true;
         }
         // if was moving left
-        else if (Zurbo_x < lastZurboX) {
-          Zurbo_x += (100 - (Zurbo_x % 100));
+        else {
+          Zurbo_x = Level_getBlockRight(Zurbo_x);
           xAdjusted = true;
         }
       }
@@ -243,7 +269,7 @@ var Zurbo_isInAir = function() {
   return Zurbo_jumpsLeft < 2;
 };
 
-var Zurbo_updateBodyAngle = function() {
+var Zurbo_updateBowAngle = function() {
   var canvasPoint = Game_mouseToCanvas({
     x: Game_mouseX,
     y: Game_mouseY
@@ -257,9 +283,7 @@ var Zurbo_updateBodyAngle = function() {
 
   Zurbo_bow_angle = angle + (dx >= 0 ? Math.PI/2 : -1 * Math.PI/2);
 
-  if (!Zurbo_isInAir() && Zurbo_isRunning()) {
-    Zurbo_bow_angle += 0.1 * Math.sin(new Date().getTime()/50);
-  }
+
 
 };
 

@@ -188,6 +188,7 @@ var Game_render = function() {
     
     Mob_render();
     Zurbo_render();
+    Projectile_render();
   }
   else {
     Text_render();
@@ -209,8 +210,9 @@ var Game_update = function() {
   var timeDiff = (now - Game_lastTime)/1000;
 
   if (Game_state === GAME_PLAYING) {
-    Zurbo_update(timeDiff);
     Mob_update(timeDiff);
+    Zurbo_update(timeDiff);
+    Projectile_update(timeDiff);
   }
 
   Zurbo_updatePixelation(timeDiff);
@@ -227,7 +229,7 @@ var Game_setState = function(state) {
     case GAME_INTRO_1:
       Game_pixelation = 20;
       Game_endPixelation = 5;
-      //Music_play();
+      Music_play();
       break;
     case GAME_INTRO_2:
       Game_pixelation = 20;
