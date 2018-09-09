@@ -10,7 +10,7 @@ var Text_render = function() {
       Text_renderLine('Wake up Zurbo...', 80, 0);
       break;
     case GAME_INTRO_2:
-      Text_renderLine('I\'ve been watching you..', 80, -60);
+      Text_renderLine('I\'ve been watching you...', 80, -60);
       Text_renderLine('And your world.', 80, 60);
       break;
     case GAME_INTRO_3:
@@ -26,6 +26,11 @@ var Text_render = function() {
       Text_renderLine('[WASD] - move around', 80, -130);
       Text_renderLine('[Space] - jump and double jump', 80, 0);
       Text_renderLine('Mouse - Blaster Bow', 80, 130);
+      break;
+    case GAME_DIED:
+      Text_renderLine('Zurbo, You have failed...', 80, -130);
+      Text_renderLine('Your world is lost.', 80, 0);
+      Text_renderLine('Press [Enter] to continue...', 80, 130);
       break;
   }
 

@@ -16,11 +16,11 @@ var Level1_grid = [
   ],
   // foreground
   [
-    [1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1],
-    [1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, A,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1],
-    [1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1],
-    [1,  ,  , 1,  ,  ,  ,  ,  ,  ,  ,  ,  , 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1],
-    [1,  , 1, 1, 1,  ,  ,  , 1, 1,  , A,  ,  ,  ,  ,  ,  ,  ,  , A,  ,  ,  ,  ,  ,  , 1],
+    [1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1],
+    [1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , A,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1],
+    [1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1],
+    [1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1],
+    [1, 1, 1,  ,  ,  ,  ,  ,  , 1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  , A,  ,  ,  ,  ,  , A, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
   ]
 ];
@@ -49,59 +49,6 @@ var Level1_blocks = [
           Canvas_blockSpriteContext.fillRect(x, y, 2, 2);
         }
       }
-    }
-  },
-  // 2 - slope up grass
-  {
-    render: function() {
-      Canvas_blockSpriteContext.save();
-      Canvas_blockSpriteContext.beginPath();
-      Canvas_blockSpriteContext.moveTo(0, 100);
-      Canvas_blockSpriteContext.lineTo(100, 0);
-      Canvas_blockSpriteContext.lineTo(100, 100);
-      Canvas_blockSpriteContext.fillStyle = Canvas_blockSpriteContext.createPattern(Canvas_blockSpriteCanvas, "repeat");
-      Canvas_blockSpriteContext.translate(-1*1*100, 0);
-      Canvas_blockSpriteContext.fill();
-      Canvas_blockSpriteContext.restore();
-
-      // top line
-      Canvas_blockSpriteContext.beginPath();
-      Canvas_blockSpriteContext.strokeStyle = '#47660c';
-      Canvas_blockSpriteContext.lineWidth = 2;
-      Canvas_blockSpriteContext.moveTo(0, 100);
-      Canvas_blockSpriteContext.lineTo(100, 0);
-      Canvas_blockSpriteContext.stroke();
-
-
-    }
-  },
-  // 3 - slope down grass
-  {
-    render: function() {
-      Canvas_blockSpriteContext.save();
-      Canvas_blockSpriteContext.beginPath();
-      Canvas_blockSpriteContext.moveTo(0, 0);
-      Canvas_blockSpriteContext.lineTo(100, 100);
-      Canvas_blockSpriteContext.lineTo(0, 100);
-      Canvas_blockSpriteContext.fillStyle = Canvas_blockSpriteContext.createPattern(Canvas_blockSpriteCanvas, "repeat");
-      Canvas_blockSpriteContext.translate(-1*1*100, 0);
-      Canvas_blockSpriteContext.fill();
-      Canvas_blockSpriteContext.restore();
-
-      // top line
-      Canvas_blockSpriteContext.beginPath();
-      Canvas_blockSpriteContext.strokeStyle = '#47660c';
-      Canvas_blockSpriteContext.lineWidth = 2;
-      Canvas_blockSpriteContext.moveTo(0, 0);
-      Canvas_blockSpriteContext.lineTo(100, 100);
-      Canvas_blockSpriteContext.stroke();
-    }
-  },
-  // 4 - green blob
-  {
-    render: function() {
-      Canvas_blockSpriteContext.fillStyle = 'green';
-      Canvas_blockSpriteContext.fillRect(0, 0, 100, 100);
     }
   }
 ];

@@ -6,7 +6,8 @@ var Game_mouseX;
 var Game_mouseY;
 var Game_pixelation = 5;
 var Game_endPixelation = 5;
-var Game_pixelationVelocity = 24; // pixels / second
+var Game_pixelationVelocity; // pixels / second
+var Game_gravity = 2000; // pixels / second^2
 
 // enums
 var GAME_LOADING        = 'loading';
@@ -17,6 +18,7 @@ var GAME_INTRO_3        = 'intro-3';
 var GAME_INTRO_4        = 'intro-4';
 var GAME_INSTRUCTIONS   = 'instructions';
 var GAME_PLAYING        = 'playing';
+var GAME_DIED           = 'died';
 
 var Game_state = GAME_LOADING;
 
@@ -33,7 +35,6 @@ var Game_init = function() {
   Sprites_init();
   Zurbo_init();
   Level_init();
-  Mob_init();
 
   Game_syncSceneSize();
 
@@ -139,9 +140,6 @@ var Game_listen = function() {
         else if (Game_state === GAME_INTRO_1) {
           Game_setState(GAME_INTRO_2);
         }
-        else if (Game_state === GAME_INTRO_1) {
-          Game_setState(GAME_INTRO_2);
-        }
         else if (Game_state === GAME_INTRO_2) {
           Game_setState(GAME_INTRO_3);
         }
@@ -153,6 +151,9 @@ var Game_listen = function() {
         }
         else if (Game_state === GAME_INSTRUCTIONS) {
           Game_setState(GAME_PLAYING);
+        }
+        else if (Game_state === GAME_DIED) {
+          Game_setState(GAME_INTRO_1);
         }
         break;
 
@@ -221,44 +222,34 @@ var Game_update = function() {
 };
 
 var Game_setState = function(state) {
-  switch(state) {
-    case GAME_TITLE:
-      Game_pixelation = 20;
-      Game_endPixelation = 5;
-      break;
-    case GAME_INTRO_1:
-      Game_pixelation = 20;
-      Game_endPixelation = 5;
-      Music_play();
-      break;
-    case GAME_INTRO_2:
-      Game_pixelation = 20;
-      Game_endPixelation = 5;
-      break;
-    case GAME_INTRO_3:
-      Game_pixelation = 20;
-      Game_endPixelation = 5;
-      break;
-    case GAME_INTRO_4:
-      Game_pixelation = 20;
-      Game_endPixelation = 5;
-      break;
-    case GAME_INSTRUCTIONS:
-      Game_pixelation = 20;
-      Game_endPixelation = 5;
-      break;
-    case GAME_PLAYING:
-      Game_pixelation = 40;
-      Game_endPixelation = 1;
-      Game_pixelationVelocity = 48;
-      Zurbo_y = -200;
-      SoundEffects_play('start');
-      break;
+  if (state === GAME_PLAYING) {
+    Game_pixelation = 40;
+    Game_endPixelation = 1;
+    Game_pixelationVelocity = 48;
+    Zurbo_reset();
+    Mob_reset();
+    SoundEffects_play('start'); 
+  }
+  else if (state === GAME_INTRO_1) {
+    Game_setPixelationForText();
+    Music_play();
+  }
+  else if (state === GAME_DIED) {
+    Game_setPixelationForText();
+    Music_stop();
+  }
+  else {
+    Game_setPixelationForText();
   }
 
   Game_state = state;
 };
 
+var Game_setPixelationForText = function() {
+  Game_pixelation = 20;
+  Game_endPixelation = 5;
+  Game_pixelationVelocity = 24;
+};
 var Zurbo_updatePixelation = function(timeDiff) {
   if (Game_pixelation !== Game_endPixelation) {
     Game_pixelation -= timeDiff * Game_pixelationVelocity;

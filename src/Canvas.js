@@ -19,8 +19,12 @@ var Canvas_blockSpriteContext;
 var Canvas_tempCanvas;
 var Canvas_tempContext;
 
+var Canvas_pixelateCanvas;
+var Canvas_pixelateContext;
+
 var Canvas_projectileCanvas;
 var Canvas_projectileContext;
+
 
 var Canvas_init = function() {
   // 0 - farthest canvas, doesn't move
@@ -44,7 +48,7 @@ var Canvas_init = function() {
   Canvas_sceneContext = Canvas_getContext(Canvas_sceneCanvas);
   Game_viewport.appendChild(Canvas_sceneCanvas);
 
-  Canvas_staticSpriteCanvas = Canvas_createCanvas(256, 106);
+  Canvas_staticSpriteCanvas = Canvas_createCanvas(256, 26*7);
   Canvas_staticSpriteContext = Canvas_getContext(Canvas_staticSpriteCanvas);
 
   Canvas_blockSpriteCanvas = Canvas_createCanvas(1000, 100);
@@ -56,7 +60,10 @@ var Canvas_init = function() {
   Canvas_projectileCanvas = Canvas_createCanvas(Projectile_canvasSize, Projectile_canvasSize);
   Canvas_projectileContext = Canvas_getContext(Canvas_projectileCanvas);
 
-  Canvas_debug(Canvas_staticSpriteCanvas);
+  Canvas_pixelateCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
+  Canvas_pixelateContext = Canvas_getContext(Canvas_pixelateCanvas);
+
+  //Canvas_debug(Canvas_staticSpriteCanvas);
 };
 
 var Canvas_debug = function(canvas) {
@@ -89,21 +96,14 @@ var Canvas_getContext = function(canvas) {
 };
 
 function Canvas_pixelate(canvas, context, pixelation) {
-  //var w = Game_viewportWidth * size;
-  //var h = Game_viewportHeight * size;
-
-  // then draw that scaled image thumb back to fill canvas
-  // As smoothing is off the result will be pixelated
-  //context.scale(size, size);
-
-  Canvas_tempContext.clearRect(0, 0, canvas.width, canvas.height);
-  Canvas_tempContext.save();
-  Canvas_tempContext.scale(1/pixelation, 1/pixelation);
-  Canvas_tempContext.drawImage(canvas, 0, 0, canvas.width, canvas.height);
-  Canvas_tempContext.restore();
+  Canvas_pixelateContext.clearRect(0, 0, canvas.width, canvas.height);
+  Canvas_pixelateContext.save();
+  Canvas_pixelateContext.scale(1/pixelation, 1/pixelation);
+  Canvas_pixelateContext.drawImage(canvas, 0, 0, canvas.width, canvas.height);
+  Canvas_pixelateContext.restore();
 
   context.clearRect(0, 0, canvas.width, canvas.height);
-  context.drawImage(Canvas_tempCanvas, 0, 0, canvas.width/pixelation, canvas.height/pixelation, 0, 0, canvas.width, canvas.height);
+  context.drawImage(Canvas_pixelateCanvas, 0, 0, canvas.width/pixelation, canvas.height/pixelation, 0, 0, canvas.width, canvas.height);
 }
 
 

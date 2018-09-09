@@ -20,7 +20,7 @@ var Projectile_render = function() {
     Canvas_projectileContext.moveTo(Projectile_canvasSize/2, Projectile_canvasSize/2);
     Canvas_projectileContext.lineTo(Projectile_canvasSize/2+projectileX, Projectile_canvasSize/2+projectileY);
     Canvas_projectileContext.lineWidth = 7;
-    Canvas_projectileContext.strokeStyle = 'red';
+    Canvas_projectileContext.strokeStyle = 'blue';
     Canvas_projectileContext.stroke();
 
     Canvas_projectileContext.beginPath();
@@ -54,7 +54,7 @@ var Projectile_update = function(timeDiff) {
     // if hit a mob
     if (mob) {
       object.splice(index, 1);
-      SoundEffects_play('hit');
+      Mob_hit(mob);
     }
     // if hit a block
     else if (Level_isBlock(x, y)) {

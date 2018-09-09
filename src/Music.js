@@ -340,7 +340,13 @@ var Music_init = function() {
   
 };
 
+var Music_stop = function() {
+  Music_audio.pause();
+  Music_audio.currentTime = 0;
+};
+
 var Music_play = function() {
+  Music_stop();
   Music_audio.play();
   Music_playing = true;
 };
