@@ -1,23 +1,55 @@
 var Mob_mobs = [];
 var Mob_dieVerticalVelocity = -800;
 var Mob_hitDistance = 60;
+var Mob_minTimeBetweenHits = 0.5; // seconds
+var Mob_minTimeBetweenLasers = 0.5;
+var Mob_lastLaserTime = 0;
+var Mob_bossHitDistance = 1400;
+
+var Mob_types = {
+  // axe guy
+  A: {
+    spriteVelocity: 6, // sprites / second
+    runSpeed: 200, // pixels / second,
+    spriteY: 26,
+    spriteHitY: 26 + 52,
+    spriteDeadY: 26 + 52 + 52,
+    spriteStartIndex: 0,
+    startLife: 5
+  },
+  // monster
+  M: {
+    spriteVelocity: 6, // sprites / second
+    runSpeed: 200 // pixels / second
+  },
+  // boss
+  B: {
+    spriteVelocity: 6, // sprites / second
+    runSpeed: 300, // pixels / second 
+    spriteY: 26*4,
+    spriteHitY: 26*2,
+    spriteDeadY: 26*4,
+    spriteStartIndex: 4,
+    startLife: 10
+  }
+};
 
 var Mob_reset = function() {
   var pos;
   Mob_mobs = [];
   Level_grid[3].forEach(function(rowBlock, r) {
-    rowBlock.forEach(function(blockIndex, c) {
-      if (blockIndex === 'A' || blockIndex === 'M') {
+    rowBlock.forEach(function(type, c) {
+      if (Mob_isMob(type)) {
         pos = Level_getPositionFromRowCol(r, c);
         //console.log(pos);
         Mob_mobs.push({
-          type: blockIndex,
+          type: type,
           spriteIndex: Math.round(Math.random() * 3),
           direction: -1,
           x: pos.x,
           y: pos.y,
           hit: false,
-          life: 5,
+          life: Mob_types[type].startLife,
           verticalVelocity: 0
         });
       }
@@ -25,23 +57,27 @@ var Mob_reset = function() {
   });
 };
 
+var Mob_isMob = function(type) {
+  return type === 'A' || type === 'M' || type === 'B';
+};
+
 var Mob_render = function() {
   Mob_mobs.forEach(function(mob) {
+    var spriteStartIndex = Mob_types[mob.type].spriteStartIndex;
     var spriteIndex;
     var spriteY;
 
     if (mob.life === 0) {
-      spriteIndex = 0;
-      spriteY = 26 + 52 + 52;
+      spriteIndex = 0 + spriteStartIndex;
+      spriteY = Mob_types[mob.type].spriteDeadY;
     }
     else if (mob.hit) {
-      spriteIndex = Math.round(mob.spriteIndex % 3);
-      spriteY = 26 + 52;
-
+      spriteIndex = Math.round(mob.spriteIndex % 3) + spriteStartIndex;
+      spriteY = Mob_types[mob.type].spriteHitY;
     }
     else {
-      spriteIndex = Math.round(mob.spriteIndex % 3);
-      spriteY = 26;
+      spriteIndex = Math.round(mob.spriteIndex % 3) + spriteStartIndex;
+      spriteY = Mob_types[mob.type].spriteY;
     }
 
 
@@ -85,8 +121,25 @@ var Mob_update = function(timeDiff) {
   Mob_updatePosition(timeDiff);
   Mob_updateSpriteIndex(timeDiff);
   Mob_hitZurbo();
+  Mob_fireLasers();
   
 
+};
+
+var Mob_fireLasers = function() {
+  var time = new Date().getTime()/1000;
+
+  Mob_mobs.forEach(function(mob, index, object) {
+    // if alive
+    if (mob.type === 'B' && mob.life > 0 && Zurbo_life > 0 && time - Mob_lastLaserTime > Mob_minTimeBetweenLasers) {
+      if (Math.abs(Zurbo_y - (mob.y-52)) <= Mob_bossHitDistance) {
+        if ((Zurbo_x > mob.x && Zurbo_x-mob.x <= Mob_bossHitDistance) || (Zurbo_x < mob.x && mob.x - Zurbo_x <= Mob_bossHitDistance)) {
+          Projectile_fire(mob.x, mob.y-52, Zurbo_x, Zurbo_y-52, 'red');
+          Mob_lastLaserTime = time;
+        }
+      }
+    }
+  });
 };
 
 var Mob_hitZurbo = function() {
@@ -181,6 +234,9 @@ var Mob_hit = function(mob) {
     if (mob.life === 0) {
       mob.verticalVelocity = Mob_dieVerticalVelocity;
       SoundEffects_play('bad-guy-die');
+      if (mob.type === 'B') {
+        Mob_bossDie();
+      }
     }
 
     SoundEffects_play('hit');
@@ -188,12 +244,9 @@ var Mob_hit = function(mob) {
   
 };
 
-var Mob_types = {
-  A: {
-    spriteVelocity: 6, // sprites / second
-    runSpeed: 200 // pixels / second
-  },
-  M: {
-
-  }
+var Mob_bossDie = function() {
+  setTimeout(function() {
+    Game_setState(GAME_WON);
+  }, 3000);
 };
+

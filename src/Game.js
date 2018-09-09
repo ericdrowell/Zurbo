@@ -19,6 +19,7 @@ var GAME_INTRO_4        = 'intro-4';
 var GAME_INSTRUCTIONS   = 'instructions';
 var GAME_PLAYING        = 'playing';
 var GAME_DIED           = 'died';
+var GAME_WON            = 'won';
 
 var Game_state = GAME_LOADING;
 
@@ -155,6 +156,9 @@ var Game_listen = function() {
         else if (Game_state === GAME_DIED) {
           Game_setState(GAME_INTRO_1);
         }
+        else if (Game_state === GAME_WON) {
+          Game_setState(GAME_INTRO_1);
+        }
         break;
 
     }
@@ -232,11 +236,16 @@ var Game_setState = function(state) {
   }
   else if (state === GAME_INTRO_1) {
     Game_setPixelationForText();
-    Music_play();
+    //Music_play();
   }
   else if (state === GAME_DIED) {
     Game_setPixelationForText();
     Music_stop();
+  }
+  else if (state === GAME_WON) {
+    Game_setPixelationForText();
+    Music_stop();
+    SoundEffects_play('player-win');
   }
   else {
     Game_setPixelationForText();

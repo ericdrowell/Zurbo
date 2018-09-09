@@ -6,7 +6,6 @@ var Zurbo_direction = 0;
 var Zurbo_verticalVelocity; // pixels / second
 var Zurbo_jumpVelocity = -835;
 var Zurbo_spriteVelocity = 6; // sprites / second
-var Zurbo_minTimeBetweenHits = 0.5; // seconds
 var Zurbo_startLife = 5;
 
 // Zurbo can jump once off the ground, and then in the air!
@@ -44,26 +43,7 @@ var Zurbo_listen = function() {
       var y = Zurbo_y - 52;
       var clickX = canvasPoint.x + Zurbo_x - Game_viewportWidth/2;
       var clickY = canvasPoint.y;
-      var angle = Math.atan((clickY - y) / (clickX - x));
-
-      if (clickX >= x) {
-        //Zurbo_faceDirection = 1;
-      }
-      else {
-        angle += Math.PI;
-        //Zurbo_faceDirection = -1;
-      }
-
-      //console.log(angle);
-
-      Projectile_projectiles.push({
-        startX: x,
-        startY: y,
-        angle: angle,
-        magnitude: 40,
-        angleChangeSpeed: (Math.random() - 0.5)*0.4
-      });
-      SoundEffects_play('laser');
+      Projectile_fire(x, y, clickX, clickY, 'blue');
     }
 
   });
@@ -341,7 +321,7 @@ var Zurbo_hit = function() {
   var time = new Date().getTime()/1000;
 
   if (Zurbo_life > 0) {
-    if (time - Zurbo_lastHitTime > Zurbo_minTimeBetweenHits) {
+    if (time - Zurbo_lastHitTime > Mob_minTimeBetweenHits) {
       Zurbo_lastHitTime = time;
       Zurbo_isHit = true;
       Zurbo_life--;
