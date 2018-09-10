@@ -11,6 +11,8 @@ var Level_init = function() {
   Level_renderBackground();
   Level_renderBlocks();
   Level_renderGrids();
+
+  
 };
 
 var Level_getPositionFromRowCol = function(row, col) {
@@ -62,10 +64,10 @@ var Level_renderParticleBlock = function(colors, pixelSize) {
   }
 };
 
-var Level_renderSolidBlock = function(color) {
-  Canvas_blockSpriteContext.fillStyle = color;
-  Canvas_blockSpriteContext.fillRect(0, 0, 100, 100);
-};
+// var Level_renderSolidBlock = function(color) {
+//   Canvas_blockSpriteContext.fillStyle = color;
+//   Canvas_blockSpriteContext.fillRect(0, 0, 100, 100);
+// };
 
 var Level_renderBrickBlock = function(brickColor, cementColor, borderColor) {
   var brickSpacing = 5;
@@ -146,7 +148,6 @@ var Level_renderBottomShadow = function() {
 };
 
 var Level_renderGrids = function() {
-  Level_renderGrid(0, Canvas_backgroundContext);
   Level_renderGrid(1, Canvas_foregroundContext);
   Level_renderGrid(2, Canvas_foregroundContext);
 };
@@ -160,9 +161,9 @@ var Level_renderGrid = function(gridIndex, context) {
       block = Level_blocks[type];
       if (block) {
         blockIndex = block.index;
-        Canvas_blockSpriteContext.save();
+        //Canvas_blockSpriteContext.save();
         context.drawImage(Canvas_blockSpriteCanvas, blockIndex*100, 0, 100, 100, c*100, r*100, 100, 100);
-        Canvas_blockSpriteContext.restore();
+        //Canvas_blockSpriteContext.restore();
       }
     });
   });

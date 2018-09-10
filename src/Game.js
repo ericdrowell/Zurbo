@@ -32,27 +32,36 @@ var Game_init = function() {
   
   Canvas_init();
   Music_init();
-  SoundEffects_init();
-  Sprites_init();
-  Zurbo_init();
-  Level_init();
+
 
   Game_syncSceneSize();
-
+  Game_update();
+  Game_render();
   Game_listen();
   Game_loop();
   Game_waitForReady();
+
+  setTimeout(function() {
+    SoundEffects_init();
+    Sprites_init();
+    Zurbo_init();
+    Level_init();
+  }, 50);
+
+  
 };
 
 var Game_onReady = function() {
   Game_setState(GAME_TITLE);
   console.log('game is ready');
+
 };
 
 var Game_waitForReady = function() {
   var interval = setInterval(function() {
     if (Music_ready) {
       clearInterval(interval);
+
       Game_onReady(); 
     }
   }, 17);
@@ -179,10 +188,11 @@ var Game_setupDom = function() {
 };
 
 var Game_loop = function() {
-  requestAnimationFrame(Game_loop);
+  
 
   Game_update();
   Game_render();
+  requestAnimationFrame(Game_loop);
 };
 
 var Game_render = function() {
@@ -236,7 +246,7 @@ var Game_setState = function(state) {
   }
   else if (state === GAME_INTRO_1) {
     Game_setPixelationForText();
-    Music_play();
+    //Music_play();
   }
   else if (state === GAME_DIED) {
     Game_setPixelationForText();
