@@ -51,7 +51,7 @@ var Level_getRandomColor = function(colors) {
   return colors[Math.round(Math.random()*(colors.length-1))];
 };
 
-Level_renderParticleBlock = function(colors, pixelSize) {
+var Level_renderParticleBlock = function(colors, pixelSize) {
   var color;
   for (var x=0; x<100/pixelSize; x++) {
     for (var y=0; y<100/pixelSize; y++) {
@@ -62,7 +62,7 @@ Level_renderParticleBlock = function(colors, pixelSize) {
   }
 };
 
-Level_renderSolidBlock = function(color) {
+var Level_renderSolidBlock = function(color) {
   Canvas_blockSpriteContext.fillStyle = color;
   Canvas_blockSpriteContext.fillRect(0, 0, 100, 100);
 };
