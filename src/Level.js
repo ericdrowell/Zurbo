@@ -42,9 +42,9 @@ var Level_getBlockRight = function(x) {
 
 var Level_render = function() {
   // render distant ground, middleground, and foreground
-  Canvas_sceneContext.drawImage(Canvas_backgroundCanvas, -0.25 * (Zurbo_x - Game_viewportWidth/2), 0);
-  Canvas_sceneContext.drawImage(Canvas_middlegroundCanvas, -1 * (Zurbo_x - Game_viewportWidth/2), 0);
-  Canvas_sceneContext.drawImage(Canvas_foregroundCanvas, -1 * (Zurbo_x - Game_viewportWidth/2), 0);
+  Canvas_sceneContext.drawImage(Canvas_backgroundCanvas, Math.floor(-0.25 * (Zurbo_x - Game_viewportWidth/2)), 0);
+  Canvas_sceneContext.drawImage(Canvas_middlegroundCanvas, Math.floor(-1 * (Zurbo_x - Game_viewportWidth/2)), 0);
+  Canvas_sceneContext.drawImage(Canvas_foregroundCanvas, Math.floor(-1 * (Zurbo_x - Game_viewportWidth/2)), 0);
 };
 
 var Level_getRandomColor = function(colors) {

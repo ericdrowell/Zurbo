@@ -15,10 +15,9 @@ var Text_render = function() {
       Text_renderLine('and your world...', 80, 60);
       break;
     case GAME_INTRO_3:
-      Text_renderLine('In its darkest corners', 80, -180);
-      Text_renderLine('evil is online...', 80, -60);
-      Text_renderLine('Beware its darkness', 80, 60);
-      Text_renderLine('Your blaster won\'t fire there...', 80, 180);
+      Text_renderLine('In its darkest corners', 80, -120);
+      Text_renderLine('evil is online', 80, 0);
+      Text_renderLine('You cannot fight there...', 80, 120);
       break;
     case GAME_INTRO_4:
       Text_renderLine('Meet me in the', 80, -120);

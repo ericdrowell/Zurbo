@@ -24,7 +24,7 @@ var Zurbo_init = function() {
 
 var Zurbo_reset = function() {
   Zurbo_y = -200;
-  Zurbo_x = Game_viewportWidth/2;
+  Zurbo_x = 1200;
   Zurbo_life = Zurbo_startLife;
   Zurbo_faceDirection = 1;
   Zurbo_verticalVelocity = 0;
