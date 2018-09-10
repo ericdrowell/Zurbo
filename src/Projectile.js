@@ -81,7 +81,7 @@ var Projectile_update = function(timeDiff) {
       Mob_hit(mob);
     }
     // if hit zurbo
-     if (x > Zurbo_x - 32 && x < Zurbo_x + 32 && y > Zurbo_y - 54 - 54 && y < Zurbo_y -54 + 54) {
+     if (projectile.color === 'red' && x > Zurbo_x - 32 && x < Zurbo_x + 32 && y > Zurbo_y - 54 - 54 && y < Zurbo_y -54 + 54) {
       Zurbo_hit();
     }
     // if hit a block

@@ -37,7 +37,7 @@ var Mob_types = {
 var Mob_reset = function() {
   var pos;
   Mob_mobs = [];
-  Level_grid[3].forEach(function(rowBlock, r) {
+  Level_grid[2].forEach(function(rowBlock, r) {
     rowBlock.forEach(function(type, c) {
       if (Mob_isMob(type)) {
         pos = Level_getPositionFromRowCol(r, c);

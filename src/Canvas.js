@@ -27,19 +27,15 @@ var Canvas_projectileContext;
 
 
 var Canvas_init = function() {
-  // 0 - farthest canvas, doesn't move
-  Canvas_backgroundCanvas = Canvas_createCanvas(Level_width, Game_viewportHeight);
+  // farthest canvas, doesn't move
+  Canvas_backgroundCanvas = Canvas_createCanvas(Level_width/2, Game_viewportHeight);
   Canvas_backgroundContext = Canvas_getContext(Canvas_backgroundCanvas);
 
-  // 1 - far away canvas, moves slowly
-  Canvas_distantCanvas = Canvas_createCanvas(Level_width/2, Game_viewportHeight);
-  Canvas_distantContext = Canvas_getContext(Canvas_distantCanvas);
-
-  // 2 - canvas behind the layer, no interaction
+  // canvas behind the layer, no interaction
   Canvas_middlegroundCanvas = Canvas_createCanvas(Level_width, Game_viewportHeight);
   Canvas_middlegroundContext = Canvas_getContext(Canvas_middlegroundCanvas);
 
-  // 3 - canvas touching the player, has interaction
+  // canvas touching the player, has interaction
   Canvas_foregroundCanvas = Canvas_createCanvas(Level_width, Game_viewportHeight);
   Canvas_foregroundContext = Canvas_getContext(Canvas_foregroundCanvas);
 
@@ -63,7 +59,7 @@ var Canvas_init = function() {
   Canvas_pixelateCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
   Canvas_pixelateContext = Canvas_getContext(Canvas_pixelateCanvas);
 
-  //Canvas_debug(Canvas_staticSpriteCanvas);
+  //Canvas_debug(Canvas_blockSpriteCanvas);
 };
 
 var Canvas_debug = function(canvas) {

@@ -10,16 +10,16 @@ var Game_pixelationVelocity; // pixels / second
 var Game_gravity = 2000; // pixels / second^2
 
 // enums
-var GAME_LOADING        = 'loading';
-var GAME_TITLE          = 'title';
-var GAME_INTRO_1        = 'intro-1';
-var GAME_INTRO_2        = 'intro-2';
-var GAME_INTRO_3        = 'intro-3';
-var GAME_INTRO_4        = 'intro-4';
-var GAME_INSTRUCTIONS   = 'instructions';
-var GAME_PLAYING        = 'playing';
-var GAME_DIED           = 'died';
-var GAME_WON            = 'won';
+var GAME_LOADING         = 'loading';
+var GAME_TITLE           = 'title';
+var GAME_INTRO_1         = 'intro-1';
+var GAME_INTRO_2         = 'intro-2';
+var GAME_INTRO_3         = 'intro-3';
+var GAME_INTRO_4         = 'intro-4';
+var GAME_INSTRUCTIONS    = 'instructions';
+var GAME_PLAYING         = 'playing';
+var GAME_DIED            = 'died';
+var GAME_WON             = 'won';
 
 var Game_state = GAME_LOADING;
 

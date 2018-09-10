@@ -244,7 +244,7 @@ var Zurbo_updatePosition = function(timeDiff) {
     // check top point
     if (!xAdjusted) {
       // if hitting a block
-      if (Level_isBlock(Zurbo_x, Zurbo_y-100)) {
+      if (Level_isBlock(Zurbo_x, Zurbo_y-80)) {
         // if was moving right
         if (Zurbo_direction == 1) {
           Zurbo_x = Level_getBlockLeft(Zurbo_x);
@@ -285,9 +285,9 @@ var Zurbo_updatePosition = function(timeDiff) {
     }
     // if hit ceiling
     else if (Zurbo_y < lastZurboY) {
-      if (Level_isBlock(Zurbo_x, Zurbo_y-104)) {
+      if (Level_isBlock(Zurbo_x, Zurbo_y-100)) {
         //console.log('hit head');
-        Zurbo_y += (100 - (Zurbo_y-104) % 100);
+        Zurbo_y += (100 - (Zurbo_y-100) % 100);
         Zurbo_verticalVelocity = 0;
 
       }
