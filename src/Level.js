@@ -20,15 +20,15 @@ var Level_getPositionFromRowCol = function(row, col) {
   };
 };
 
-var Level_getBlockIndex = function(x, y) {
+var Level_getBlockIndex = function(x, y, gridRow) {
   var col = Math.round((x-50) / 100);
   var row = Math.round((y-50) / 100);
-  var blockIndex = Level_grid[2][row] && Level_grid[2][row][col];
+  var blockIndex = Level_grid[gridRow][row] && Level_grid[gridRow][row][col];
   return blockIndex;
 };
 
 var Level_isBlock = function(x, y) {
-  var blockIndex = Level_getBlockIndex(x, y);
+  var blockIndex = Level_getBlockIndex(x, y, 2);
   return blockIndex !== undefined && Level_blocks[blockIndex];
 };
 
@@ -65,6 +65,55 @@ var Level_renderParticleBlock = function(colors, pixelSize) {
 var Level_renderSolidBlock = function(color) {
   Canvas_blockSpriteContext.fillStyle = color;
   Canvas_blockSpriteContext.fillRect(0, 0, 100, 100);
+};
+
+var Level_renderBrickBlock = function(brickColor, cementColor, borderColor) {
+  var brickSpacing = 5;
+  var height = 20;
+  var x, y, width;
+
+  Canvas_blockSpriteContext.fillStyle = cementColor;
+  Canvas_blockSpriteContext.fillRect(0, 0, 100, 100);
+
+  for (var row = 0; row<4; row++) {
+    y = row * (height + brickSpacing);
+
+    if (row % 2 === 0) {
+      x = 0;
+      width = 45;
+      Level_renderRect(borderColor, x, y, width, height);
+      Level_renderRect(brickColor, x+2, y+2, width-2, height-2);
+
+      x += 45 + brickSpacing;
+      width = 45;
+      Level_renderRect(borderColor, x, y, width, height);
+      Level_renderRect(brickColor, x+2, y+2, width-2, height-2);
+    }
+    else {
+      x = 0;
+      width = 22;
+      Level_renderRect(borderColor, x, y, width, height);
+      Level_renderRect(brickColor, x, y+2, width, height-2);
+
+      x += 22 + brickSpacing;
+      width = 45;
+      Level_renderRect(borderColor, x, y, width, height);
+      Level_renderRect(brickColor, x+2, y+2, width-2, height-2);
+
+      x += 45 + brickSpacing;
+      width = 23;
+      Level_renderRect(borderColor, x, y, width, height);
+      Level_renderRect(brickColor, x+2, y+2, width-2, height-2);
+    }
+
+
+  }
+  
+};
+
+var Level_renderRect = function(color, x, y, width, height) {
+  Canvas_blockSpriteContext.fillStyle = color;
+  Canvas_blockSpriteContext.fillRect(x, y, width, height);
 };
 
 var Level_renderBlocks = function() {

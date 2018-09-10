@@ -20,7 +20,12 @@ var Mob_types = {
   // monster
   M: {
     spriteVelocity: 6, // sprites / second
-    runSpeed: 200 // pixels / second
+    runSpeed: 100, // pixels / second,
+    spriteY: 26,
+    spriteHitY: 26 + 52,
+    spriteDeadY: 26 + 52 + 52,
+    spriteStartIndex: 4,
+    startLife: 10
   },
   // boss
   B: {
@@ -30,7 +35,7 @@ var Mob_types = {
     spriteHitY: 26*2,
     spriteDeadY: 26*4,
     spriteStartIndex: 4,
-    startLife: 10
+    startLife: 15
   }
 };
 

@@ -1,9 +1,13 @@
 var Zurbo_x;
 var Zurbo_y;
+var Zurbo_inEvilArea;
+var Zurbo_verticalVelocity; // pixels / second
+var Zurbo_life;
+var Zurbo_faceDirection;
+
 // constants
 var Zurbo_runSpeed = 500; // pixels / second
 var Zurbo_direction = 0;
-var Zurbo_verticalVelocity; // pixels / second
 var Zurbo_jumpVelocity = -835;
 var Zurbo_spriteVelocity = 6; // sprites / second
 var Zurbo_startLife = 5;
@@ -12,10 +16,8 @@ var Zurbo_startLife = 5;
 var Zurbo_jumpsLeft = 0;
 var Zurbo_aDown = false;
 var Zurbo_dDown = false;
-var Zurbo_life;
 var Zurbo_lastHitTime = 0; // seconds
 var Zurbo_isHit = false;
-var Zurbo_faceDirection;
 var Zurbo_spriteIndex = 0;
 
 var Zurbo_init = function() {
@@ -28,22 +30,29 @@ var Zurbo_reset = function() {
   Zurbo_life = Zurbo_startLife;
   Zurbo_faceDirection = 1;
   Zurbo_verticalVelocity = 0;
+  Zurbo_inEvilArea = false;
 };
 
 var Zurbo_listen = function() {
   document.addEventListener('click', function() {
     if (Game_state == GAME_PLAYING && Zurbo_life > 0) {
-      var canvasPoint = Game_mouseToCanvas({
-        x: Game_mouseX,
-        y: Game_mouseY
-      });
-      //console.log(canvasPoint);
+      if (Zurbo_inEvilArea) {
+        SoundEffects_play('laser-jam');
+      }
+      else {
+        var canvasPoint = Game_mouseToCanvas({
+          x: Game_mouseX,
+          y: Game_mouseY
+        });
+        //console.log(canvasPoint);
 
-      var x = Zurbo_x;
-      var y = Zurbo_y - 52;
-      var clickX = canvasPoint.x + Zurbo_x - Game_viewportWidth/2;
-      var clickY = canvasPoint.y;
-      Projectile_fire(x, y, clickX, clickY, 'blue');
+        var x = Zurbo_x;
+        var y = Zurbo_y - 52;
+        var clickX = canvasPoint.x + Zurbo_x - Game_viewportWidth/2;
+        var clickY = canvasPoint.y;
+        Projectile_fire(x, y, clickX, clickY, 'blue');
+      }
+
     }
 
   });
@@ -200,6 +209,22 @@ var Zurbo_update = function(timeDiff) {
   Zurbo_updatePosition(timeDiff);
   Zurbo_updateSpriteIndex(timeDiff);
   Zurbo_checkIfFell();
+  Zurbo_checkEvilArea();
+};
+
+var Zurbo_checkEvilArea = function() {
+  var evilArea = Level_getBlockIndex(Zurbo_x, Zurbo_y-1, 1) === 5;
+
+  if (Zurbo_inEvilArea !== evilArea) {
+    Zurbo_inEvilArea = evilArea;
+    if (Zurbo_inEvilArea) {
+      SoundEffects_play('evil-online');
+    }
+    else {
+      SoundEffects_play('evil-offline');
+    }
+    
+  }
 };
 
 var Zurbo_checkIfFell = function() {
@@ -302,7 +327,7 @@ var Zurbo_updatePosition = function(timeDiff) {
   //   Zurbo_jumpsLeft = 2;
   // }
 
-
+  //console.log('Zurbo x = ' + Zurbo_x);
 };
 
 var Zurbo_updateSpriteIndex = function(timeDiff) {
