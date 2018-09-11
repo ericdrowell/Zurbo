@@ -4,7 +4,7 @@ var Mob_hitDistance = 60;
 var Mob_minTimeBetweenHits = 0.5; // seconds
 var Mob_minTimeBetweenLasers = 0.5;
 var Mob_lastLaserTime = 0;
-var Mob_bossHitDistance = 1400;
+var Mob_bossHitDistance = 1200;
 
 var Mob_types = {
   // axe guy
@@ -35,7 +35,7 @@ var Mob_types = {
     spriteHitY: 26*2,
     spriteDeadY: 26*4,
     spriteStartIndex: 4,
-    startLife: 15
+    startLife: 40
   }
 };
 
