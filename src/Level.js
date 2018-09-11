@@ -142,20 +142,20 @@ var Level_renderBlocks = function() {
 };
 
 var Level_renderTopHighlight = function() {
-  var grd = Canvas_blockSpriteContext.createLinearGradient(0, 0, 0, 20);
-  grd.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
-  grd.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  // var grd = Canvas_blockSpriteContext.createLinearGradient(0, 0, 0, 20);
+  // grd.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
+  // grd.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
-  Canvas_blockSpriteContext.fillStyle = grd;
+  Canvas_blockSpriteContext.fillStyle = 'rgba(255, 255, 255, 0.3)';
   Canvas_blockSpriteContext.fillRect(0, 0, 100, 20);
 };
 
 var Level_renderBottomShadow = function() {
-  var grd = Canvas_blockSpriteContext.createLinearGradient(0, 100, 0, 80);
-  grd.addColorStop(0, 'rgba(0, 0, 0, 0.7)');
-  grd.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  // var grd = Canvas_blockSpriteContext.createLinearGradient(0, 100, 0, 80);
+  // grd.addColorStop(0, 'rgba(0, 0, 0, 0.7)');
+  // grd.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
-  Canvas_blockSpriteContext.fillStyle = grd;
+  Canvas_blockSpriteContext.fillStyle = 'rgba(0, 0, 0, 0.4)';
   Canvas_blockSpriteContext.fillRect(0, 80, 100, 100);
 };
 
