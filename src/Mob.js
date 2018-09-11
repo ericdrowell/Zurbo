@@ -1,7 +1,7 @@
 var Mob_mobs = [];
 var Mob_dieVerticalVelocity = -800;
-var Mob_hitDistance = 60;
 var Mob_minTimeBetweenHits = 0.5; // seconds
+
 var Mob_minTimeBetweenLasers = 0.5;
 var Mob_lastLaserTime = 0;
 var Mob_bossHitDistance = 1200;
@@ -9,42 +9,55 @@ var Mob_bossHitDistance = 1200;
 var Mob_types = {
   // axe guy
   A: {
-    sv: 6, // sprite velocity sprites / second
-    rs: 200, // run speed pixels / second,
+    spriteVelocity: 6, // sprite velocity sprites / second
+    runSpeed: 200, // run speed pixels / second,
     spriteY: 26,
     spriteHitY: 26 + 52,
     spriteDeadY: 26 + 52 + 52,
     spriteStartIndex: 0,
-    startLife: 5
+    startLife: 5,
+    hitDistance: 60
   },
   // monster
   M: {
-    sv: 6, // sprites / second
-    rs: 100, // pixels / second,
+    spriteVelocity: 6, // sprites / second
+    runSpeed: 100, // pixels / second,
     spriteY: 26,
     spriteHitY: 26 + 52,
     spriteDeadY: 26 + 52 + 52,
     spriteStartIndex: 4,
-    startLife: 10
+    startLife: 20,
+    minTimeBetweenLasers: 2,
+    hitDistance: 1200,
+    projectileSpeed: 400,
+    projectileColor: 'orange',
+    projectileType: 'ball'
   },
   // boss
   B: {
-    sv: 6, // sprites / second
-    rs: 300, // pixels / second 
+    spriteVelocity: 6, // sprites / second
+    runSpeed: 300, // pixels / second 
     spriteY: 26*4,
     spriteHitY: 26*2,
     spriteDeadY: 26*4,
     spriteStartIndex: 4,
-    startLife: 40
+    startLife: 40,
+    minTimeBetweenLasers: 0.5,
+    hitDistance: 1200,
+    projectileSpeed: 1000,
+    projectileColor: 'red',
+    projectileType: 'laser'
   }
 };
 
 var Mob_reset = function() {
-  var pos;
+  var pos, mob;
+
   Mob_mobs = [];
   Level_grid[2].forEach(function(rowBlock, r) {
     rowBlock.forEach(function(type, c) {
       if (Mob_isMob(type)) {
+        mob = Mob_types[type];
         pos = Level_getPositionFromRowCol(r, c);
         //console.log(pos);
         Mob_mobs.push({
@@ -54,8 +67,14 @@ var Mob_reset = function() {
           x: pos.x,
           y: pos.y,
           hit: false,
-          life: Mob_types[type].startLife,
-          verticalVelocity: 0
+          life: mob.startLife,
+          verticalVelocity: 0,
+          hitDistance: mob.hitDistance, 
+          minTimeBetweenLasers: mob.minTimeBetweenLasers,
+          lastLaserTime: 0,
+          projectileColor: mob.projectileColor,
+          projectileSpeed: mob.projectileSpeed,
+          projectileType: mob.projectileType
         });
       }
     });
@@ -125,7 +144,9 @@ var Mob_update = function(timeDiff) {
   Mob_purgeDeadMobs();
   Mob_updatePosition(timeDiff);
   Mob_updateSpriteIndex(timeDiff);
+  // axe guys hit
   Mob_hitZurbo();
+  // monsters and boss shoots
   Mob_fireLasers();
   
 
@@ -135,12 +156,13 @@ var Mob_fireLasers = function() {
   var time = new Date().getTime()/1000;
 
   Mob_mobs.forEach(function(mob, index, object) {
-    // if alive
-    if (mob.type === 'B' && mob.life > 0 && Zurbo_life > 0 && time - Mob_lastLaserTime > Mob_minTimeBetweenLasers) {
-      if (Math.abs(Zurbo_y - (mob.y-52)) <= Mob_bossHitDistance) {
-        if ((Zurbo_x > mob.x && Zurbo_x-mob.x <= Mob_bossHitDistance) || (Zurbo_x < mob.x && mob.x - Zurbo_x <= Mob_bossHitDistance)) {
-          Projectile_fire(mob.x, mob.y-52, Zurbo_x, Zurbo_y-52, 'red');
-          Mob_lastLaserTime = time;
+    
+    if ((mob.type === 'B' || mob.type === 'M') && mob.life > 0 && Zurbo_life > 0 && time - mob.lastLaserTime > mob.minTimeBetweenLasers) {
+      //console.log(mob.lastLaserTime, mob.minTimeBetweenLasers, mob.hitDistance);
+      if (Math.abs(Zurbo_y - (mob.y-52)) <= mob.hitDistance) {
+        if ((Zurbo_x > mob.x && Zurbo_x-mob.x <= mob.hitDistance) || (Zurbo_x < mob.x && mob.x - Zurbo_x <= mob.hitDistance)) {
+          Projectile_fire(mob.x, mob.y-52, Zurbo_x, Zurbo_y-52, mob.projectileColor, mob.projectileSpeed, mob.projectileType);
+          mob.lastLaserTime = time;
         }
       }
     }
@@ -150,11 +172,11 @@ var Mob_fireLasers = function() {
 var Mob_hitZurbo = function() {
   Mob_mobs.forEach(function(mob, index, object) {
     // if alive
-    if (mob.life > 0) {
+    if (mob.type === 'A' && mob.life > 0) {
       // if vertically near
-      if (Math.abs(Zurbo_y - (mob.y-52)) <= Mob_hitDistance) {
+      if (Math.abs(Zurbo_y - (mob.y-52)) <= mob.hitDistance) {
         // if facing Zurbo and horizontally near
-        if ((mob.direction === 1 && Zurbo_x > mob.x && Zurbo_x-mob.x <= Mob_hitDistance) || (mob.direction === -1 && Zurbo_x < mob.x && mob.x - Zurbo_x <= Mob_hitDistance)) {
+        if ((mob.direction === 1 && Zurbo_x > mob.x && Zurbo_x-mob.x <= mob.hitDistance) || (mob.direction === -1 && Zurbo_x < mob.x && mob.x - Zurbo_x <= mob.hitDistance)) {
           Zurbo_hit();
         }
       }
@@ -172,7 +194,7 @@ var Mob_purgeDeadMobs = function() {
 
 var Mob_updatePosition = function(timeDiff) {
   Mob_mobs.forEach(function(mob) {
-    var rs = Mob_types[mob.type].rs;
+    var rs = Mob_types[mob.type].runSpeed;
     var dist = rs * timeDiff;
     var startX = mob.x;
     var lastX;
@@ -225,7 +247,7 @@ var Mob_updatePosition = function(timeDiff) {
 var Mob_updateSpriteIndex = function(timeDiff) {
   Mob_mobs.forEach(function(mob) {
     var typeObj = Mob_types[mob.type];
-    mob.spriteIndex += typeObj.sv * timeDiff;
+    mob.spriteIndex += typeObj.spriteVelocity * timeDiff;
   });
 
   

@@ -20,6 +20,7 @@ var Zurbo_spaceDown = false;
 var Zurbo_lastHitTime = 0; // seconds
 var Zurbo_isHit = false;
 var Zurbo_spriteIndex = 0;
+var Zurbo_projectileSpeed = 1000;
 
 var Zurbo_init = function() {
   Zurbo_listen();
@@ -27,7 +28,7 @@ var Zurbo_init = function() {
 
 var Zurbo_reset = function() {
   Zurbo_y = -200;
-  Zurbo_x = 1200; //15549
+  Zurbo_x = 4716; //1200; //15549
   Zurbo_life = Zurbo_startLife;
   Zurbo_faceDirection = 1;
   Zurbo_verticalVelocity = 0;
@@ -51,7 +52,7 @@ var Zurbo_listen = function() {
         var y = Zurbo_y - 52;
         var clickX = canvasPoint.x + Zurbo_x - Game_viewportWidth/2;
         var clickY = canvasPoint.y;
-        Projectile_fire(x, y, clickX, clickY, 'blue');
+        Projectile_fire(x, y, clickX, clickY, 'blue', Zurbo_projectileSpeed, 'laser');
       }
 
     }

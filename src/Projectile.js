@@ -1,6 +1,4 @@
 var Projectile_projectiles = [];
-var Projectile_speed = 1000; // pixels / second
-var Projectile_magnitude = 30;
 var Projectile_canvasSize = 100;
 
 var Projectile_render = function() {
@@ -11,24 +9,41 @@ var Projectile_render = function() {
     var angle = projectile.angle;
     var endX = Math.cos(angle) * magnitude + x;
     var endY = Math.sin(angle) * magnitude + y;
-    var projectileX = Math.cos(angle) * Projectile_magnitude;
-    var projectileY = Math.sin(angle) * Projectile_magnitude;
+    var projectileX = Math.cos(angle) * 30;
+    var projectileY = Math.sin(angle) * 30;
 
+    var type = projectile.type;
 
+    
     Canvas_projectileContext.clearRect(0, 0, Projectile_canvasSize, Projectile_canvasSize);
-    Canvas_projectileContext.beginPath();
-    Canvas_projectileContext.moveTo(Projectile_canvasSize/2, Projectile_canvasSize/2);
-    Canvas_projectileContext.lineTo(Projectile_canvasSize/2+projectileX, Projectile_canvasSize/2+projectileY);
-    Canvas_projectileContext.lineWidth = 7;
-    Canvas_projectileContext.strokeStyle = projectile.color;
-    Canvas_projectileContext.stroke();
 
-    Canvas_projectileContext.beginPath();
-    Canvas_projectileContext.moveTo(Projectile_canvasSize/2, Projectile_canvasSize/2);
-    Canvas_projectileContext.lineTo(Projectile_canvasSize/2+projectileX, Projectile_canvasSize/2+projectileY);
-    Canvas_projectileContext.lineWidth = 3;
-    Canvas_projectileContext.strokeStyle = 'white';
-    Canvas_projectileContext.stroke();
+    if (type === 'laser') {
+      Canvas_projectileContext.beginPath();
+      Canvas_projectileContext.moveTo(Projectile_canvasSize/2, Projectile_canvasSize/2);
+      Canvas_projectileContext.lineTo(Projectile_canvasSize/2+projectileX, Projectile_canvasSize/2+projectileY);
+      Canvas_projectileContext.lineWidth = 7;
+      Canvas_projectileContext.strokeStyle = projectile.color;
+      Canvas_projectileContext.stroke();
+
+      Canvas_projectileContext.beginPath();
+      Canvas_projectileContext.moveTo(Projectile_canvasSize/2, Projectile_canvasSize/2);
+      Canvas_projectileContext.lineTo(Projectile_canvasSize/2+projectileX, Projectile_canvasSize/2+projectileY);
+      Canvas_projectileContext.lineWidth = 3;
+      Canvas_projectileContext.strokeStyle = 'white';
+      Canvas_projectileContext.stroke();
+    }
+    // ball
+    else {
+      Canvas_projectileContext.beginPath();
+      Canvas_projectileContext.arc(Projectile_canvasSize/2, Projectile_canvasSize/2, 10, 0, Math.PI*2, false);
+      Canvas_projectileContext.lineWidth = 3;
+      Canvas_projectileContext.fillStyle = 'white';
+      Canvas_projectileContext.fill();
+      Canvas_projectileContext.strokeStyle = projectile.color;
+      Canvas_projectileContext.stroke();
+
+
+    }
 
     Canvas_pixelate(Canvas_projectileCanvas, Canvas_projectileContext, 3);
 
@@ -41,7 +56,7 @@ var Projectile_render = function() {
   });
 };
 
-var Projectile_fire = function(startX, startY, endX, endY, color) {
+var Projectile_fire = function(startX, startY, endX, endY, color, speed, type) {
   var angle = Math.atan((endY - startY) / (endX - startX));
 
   if (endX >= startX) {
@@ -60,14 +75,16 @@ var Projectile_fire = function(startX, startY, endX, endY, color) {
     angle: angle,
     magnitude: 50,
     angleChangeSpeed: (Math.random() - 0.5)*0.4,
-    color: color
+    color: color,
+    speed: speed,
+    type: type
   });
   SoundEffects_play('laser');
 };
 
 var Projectile_update = function(timeDiff) {
   Projectile_projectiles.forEach(function(projectile, index, object) {
-    projectile.magnitude += timeDiff * Projectile_speed;
+    projectile.magnitude += timeDiff * projectile.speed;
     projectile.angle += projectile.angleChangeSpeed * timeDiff;
 
     var x = Math.cos(projectile.angle) * projectile.magnitude + projectile.startX;
@@ -81,7 +98,7 @@ var Projectile_update = function(timeDiff) {
       Mob_hit(mob);
     }
     // if hit zurbo
-     if (projectile.color === 'red' && x > Zurbo_x - 32 && x < Zurbo_x + 32 && y > Zurbo_y - 54 - 54 && y < Zurbo_y -54 + 54) {
+     if (projectile.color !== 'blue' && x > Zurbo_x - 32 && x < Zurbo_x + 32 && y > Zurbo_y - 54 - 54 && y < Zurbo_y -54 + 54) {
       Zurbo_hit();
     }
     // if hit a block

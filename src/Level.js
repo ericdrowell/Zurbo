@@ -59,6 +59,15 @@ var Level_render = function() {
   Canvas_sceneContext.restore();
 
   Level_renderGrids(Zurbo_x);
+
+  Level_renderEvilEffect();
+};
+
+var Level_renderEvilEffect = function() {
+  if (Zurbo_inEvilArea) {
+    Canvas_sceneContext.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    Canvas_sceneContext.fillRect(0, 0, Game_viewportWidth, Game_viewportHeight);
+  }
 };
 
 var Level_getRandomColor = function(colors) {

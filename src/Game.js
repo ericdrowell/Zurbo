@@ -145,7 +145,7 @@ var Game_listen = function() {
       if (Game_state > GAME_PLAYING) {
         Game_setState(GAME_INTRO_1);
       }
-      else if (Game_state < GAME_PLAYING) {
+      else if (Game_state > GAME_LOADING && Game_state < GAME_PLAYING) {
         Game_setState(Game_state+1);
       }
     }
@@ -208,8 +208,7 @@ var Game_render = function() {
   Canvas_sceneContext.clearRect(0, 0, Game_viewportWidth, Game_viewportHeight);
 
   if (Game_state === GAME_PLAYING) {
-    Level_render();
-    
+    Level_render();    
     Mob_render();
     Zurbo_render();
     Projectile_render();
