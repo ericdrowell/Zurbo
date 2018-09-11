@@ -53,7 +53,7 @@ var Level_render = function() {
 
   for (var n=0; n<numStamps; n++) {
     Canvas_sceneContext.translate(Game_viewportWidth, 0);
-    Canvas_sceneContext.drawImage(Canvas_backgroundCanvas, 0, 0);
+    Canvas_sceneContext.drawImage(Canvas_backgroundCanvas, 0, 0, Game_viewportWidth, Game_viewportHeight, 0, 0, Game_viewportWidth+2, Game_viewportHeight);
   }
 
   Canvas_sceneContext.restore();
@@ -189,7 +189,8 @@ var Level_renderGrid = function(gridIndex, context, col) {
 
       if (block) {
         blockIndex = block.index;
-        context.drawImage(Canvas_blockSpriteCanvas, blockIndex*100, 0, 100, 100, x, r*100, 100, 100);
+        // width of 102 to cover spacing between blocks in Safari
+        context.drawImage(Canvas_blockSpriteCanvas, blockIndex*100, 0, 100, 100, Math.floor(x), Math.floor(r*100), 102, 100);
       }
 
       x+= 100;

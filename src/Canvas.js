@@ -82,7 +82,8 @@ function Canvas_pixelate(canvas, context, pixelation) {
   Canvas_pixelateContext.restore();
 
   context.clearRect(0, 0, canvas.width, canvas.height);
-  context.drawImage(Canvas_pixelateCanvas, 0, 0, canvas.width/pixelation, canvas.height/pixelation, 0, 0, canvas.width, canvas.height);
+  // the canvas.width + 3 fills in gaps left by pixelation on the right side of canvas
+  context.drawImage(Canvas_pixelateCanvas, 0, 0, canvas.width/pixelation, canvas.height/pixelation, 0, 0, canvas.width+3, canvas.height);
 }
 
 

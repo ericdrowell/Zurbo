@@ -233,13 +233,16 @@ var Game_update = function() {
   }
   var timeDiff = (now - Game_lastTime)/1000;
 
-  if (Game_state === GAME_PLAYING) {
-    Mob_update(timeDiff);
-    Zurbo_update(timeDiff);
-    Projectile_update(timeDiff);
-  }
+  // only update frame if we are above 10 frames per second, 
+  if (timeDiff < 0.1) {
+    if (Game_state === GAME_PLAYING) {
+      Mob_update(timeDiff);
+      Zurbo_update(timeDiff);
+      Projectile_update(timeDiff);
+    }
 
-  Zurbo_updatePixelation(timeDiff);
+    Zurbo_updatePixelation(timeDiff);
+  }
 
   Game_lastTime = now;
 };

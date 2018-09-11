@@ -16,6 +16,7 @@ var Zurbo_startLife = 5;
 var Zurbo_jumpsLeft = 0;
 var Zurbo_aDown = false;
 var Zurbo_dDown = false;
+var Zurbo_spaceDown = false;
 var Zurbo_lastHitTime = 0; // seconds
 var Zurbo_isHit = false;
 var Zurbo_spriteIndex = 0;
@@ -34,7 +35,7 @@ var Zurbo_reset = function() {
 };
 
 var Zurbo_listen = function() {
-  document.addEventListener('click', function() {
+  document.addEventListener('mousedown', function() {
     if (Game_state == GAME_PLAYING && Zurbo_life > 0) {
       if (Zurbo_inEvilArea) {
         SoundEffects_play('laser-jam');
@@ -81,10 +82,13 @@ var Zurbo_listen = function() {
         break;
       case 32:
         // space
-        if (Zurbo_life > 0 && Zurbo_jumpsLeft > 0) {
-          Zurbo_verticalVelocity = Zurbo_jumpVelocity;
-          Zurbo_jumpsLeft--;
-          SoundEffects_play('jump');
+        if (!Zurbo_spaceDown) {
+          if (Zurbo_life > 0 && Zurbo_jumpsLeft > 0) {
+            Zurbo_verticalVelocity = Zurbo_jumpVelocity;
+            Zurbo_jumpsLeft--;
+            Zurbo_spaceDown = true;
+            SoundEffects_play('jump');
+          }
         }
         break;
     }
@@ -101,6 +105,11 @@ var Zurbo_listen = function() {
         if (Zurbo_life > 0 && !Zurbo_aDown && !Zurbo_dDown) {
           Zurbo_direction = 0;
         }
+        break;
+      case 32:
+        // space
+        case 32:
+        Zurbo_spaceDown = false;
         break;
       case 68:
         // d

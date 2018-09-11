@@ -22,7 +22,7 @@ var Text_render = function() {
     case GAME_INTRO_4:
       Text_renderLine('Meet me in the', 80, -120);
       Text_renderLine('Throne of Mirrors', 80, 0);
-      Text_renderLine('before its too late...', 80, 120);
+      Text_renderLine('before it\'s too late...', 80, 120);
       break;
     case GAME_INSTRUCTIONS:
       Text_renderLine('[WASD] - move around', 80, -120);
