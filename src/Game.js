@@ -145,7 +145,7 @@ var Game_listen = function() {
       if (Game_state > GAME_PLAYING) {
         Game_setState(GAME_INTRO_1);
       }
-      else {
+      else if (Game_state < GAME_PLAYING) {
         Game_setState(Game_state+1);
       }
     }
