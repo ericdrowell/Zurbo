@@ -28,15 +28,15 @@ var Canvas_projectileContext;
 
 var Canvas_init = function() {
   // farthest canvas, doesn't move
-  Canvas_backgroundCanvas = Canvas_createCanvas(Level_width/2, Game_viewportHeight);
+  Canvas_backgroundCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
   Canvas_backgroundContext = Canvas_getContext(Canvas_backgroundCanvas);
 
   // canvas behind the layer, no interaction
-  Canvas_middlegroundCanvas = Canvas_createCanvas(Level_width, Game_viewportHeight);
+  Canvas_middlegroundCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
   Canvas_middlegroundContext = Canvas_getContext(Canvas_middlegroundCanvas);
 
   // canvas touching the player, has interaction
-  Canvas_foregroundCanvas = Canvas_createCanvas(Level_width, Game_viewportHeight);
+  Canvas_foregroundCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);
   Canvas_foregroundContext = Canvas_getContext(Canvas_foregroundCanvas);
 
   // scene composite

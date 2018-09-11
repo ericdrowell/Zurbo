@@ -213,7 +213,7 @@ var Zurbo_update = function(timeDiff) {
 };
 
 var Zurbo_checkEvilArea = function() {
-  var evilArea = Level_getBlockIndex(Zurbo_x, Zurbo_y-1, 1) === 5;
+  var evilArea = Level_getBlockType(Zurbo_x, Zurbo_y-1, 1) === 5;
 
   if (Zurbo_inEvilArea !== evilArea) {
     Zurbo_inEvilArea = evilArea;

@@ -32,11 +32,12 @@ var Level_width = Level1_grid[2][0].length * 100;
 
 //console.log('level width = ' + Level_width + 'px');
 
-var Level1_renderBackground = function() {
-  var x;
-  var y;
+var Level1_renderBackground = function(x) {
+  var starX;
+  var starY;
   var radius;
   var opacity;
+  var n;
 
   Canvas_tempContext.clearRect(0, 0, Game_viewportWidth, Game_viewportHeight);
   // sky
@@ -44,14 +45,14 @@ var Level1_renderBackground = function() {
   Canvas_tempContext.fillRect(0, 0, Game_viewportWidth, Game_viewportHeight);
 
   // stars
-  for (var n=0; n<40; n++) {
-    x = Math.random() * Game_viewportWidth;
-    y = Math.random() * Game_viewportHeight;
+  for (n=0; n<40; n++) {
+    starX = Math.random() * Game_viewportWidth;
+    starY = Math.random() * Game_viewportHeight;
     radius = Math.random() * 3;
     opacity = Math.random();
     Canvas_tempContext.save();
     Canvas_tempContext.beginPath();
-    Canvas_tempContext.arc(x, y, radius, 0, Math.PI*2, false);
+    Canvas_tempContext.arc(starX, starY, radius, 0, Math.PI*2, false);
     Canvas_tempContext.fillStyle = 'white';
     Canvas_tempContext.globalAlpha = opacity;
     Canvas_tempContext.fill();
@@ -59,11 +60,16 @@ var Level1_renderBackground = function() {
   }
 
   // darker mountains
+  var points = [91,494, 142,544, 199,513, 240,545, 338,453, 400, 460, 488,430, 577, 500, 696,490,  823,531, 872,490, 924,500, 1014,413, 1068,454, 1205,340, 1335,468];
+
   Canvas_tempContext.beginPath();
-  Canvas_tempContext.moveTo(0, 500);
-  Canvas_tempContext.lineTo(500, 400);
-  Canvas_tempContext.lineTo(600, 450);
-  Canvas_tempContext.lineTo(Game_viewportWidth, 500);
+  Canvas_tempContext.moveTo(0, 550);
+
+  for (n=0; n<points.length; n+=2) {
+    Canvas_tempContext.lineTo(points[n], points[n+1] - 50);
+  }
+
+  Canvas_tempContext.lineTo(Game_viewportWidth, 550);
   Canvas_tempContext.lineTo(Game_viewportWidth, Game_viewportHeight);
   Canvas_tempContext.lineTo(0, Game_viewportHeight);
   Canvas_tempContext.closePath();
@@ -74,11 +80,9 @@ var Level1_renderBackground = function() {
   Canvas_pixelate(Canvas_tempCanvas, Canvas_tempContext, 3);
 
   
-  x = 0;
-  while (x <= Level_width) {
-    Canvas_backgroundContext.drawImage(Canvas_tempCanvas, 0, 0, Game_viewportWidth, Game_viewportHeight, Math.floor(x), 0, Game_viewportWidth, Game_viewportHeight);
-    x+= Game_viewportWidth;
-  }
+
+  Canvas_backgroundContext.drawImage(Canvas_tempCanvas, 0, 0, Game_viewportWidth, Game_viewportHeight, 0, 0, Game_viewportWidth, Game_viewportHeight);
+
 };
 
 var Level1_blocks = {

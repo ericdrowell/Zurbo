@@ -7,12 +7,8 @@ var Level_init = function() {
   Level_grid = Level1_grid;
   Level_blocks = Level1_blocks;
   Level_renderBackground = Level1_renderBackground;
-
   Level_renderBackground();
   Level_renderBlocks();
-  Level_renderGrids();
-
-  
 };
 
 var Level_getPositionFromRowCol = function(row, col) {
@@ -22,7 +18,7 @@ var Level_getPositionFromRowCol = function(row, col) {
   };
 };
 
-var Level_getBlockIndex = function(x, y, gridRow) {
+var Level_getBlockType = function(x, y, gridRow) {
   var col = Math.round((x-50) / 100);
   var row = Math.round((y-50) / 100);
   var blockIndex = Level_grid[gridRow][row] && Level_grid[gridRow][row][col];
@@ -30,7 +26,7 @@ var Level_getBlockIndex = function(x, y, gridRow) {
 };
 
 var Level_isBlock = function(x, y) {
-  var blockIndex = Level_getBlockIndex(x, y, 2);
+  var blockIndex = Level_getBlockType(x, y, 2);
   return blockIndex !== undefined && Level_blocks[blockIndex];
 };
 
@@ -44,9 +40,25 @@ var Level_getBlockRight = function(x) {
 
 var Level_render = function() {
   // render distant ground, middleground, and foreground
-  Canvas_sceneContext.drawImage(Canvas_backgroundCanvas, Math.floor(-0.25 * (Zurbo_x - Game_viewportWidth/2)), 0);
-  Canvas_sceneContext.drawImage(Canvas_middlegroundCanvas, Math.floor(-1 * (Zurbo_x - Game_viewportWidth/2)), 0);
-  Canvas_sceneContext.drawImage(Canvas_foregroundCanvas, Math.floor(-1 * (Zurbo_x - Game_viewportWidth/2)), 0);
+  //Canvas_sceneContext.drawImage(Canvas_backgroundCanvas, Math.floor(-0.25 * (Zurbo_x - Game_viewportWidth/2)), 0);
+  //Canvas_sceneContext.drawImage(Canvas_middlegroundCanvas, Math.floor(-1 * (Zurbo_x - Game_viewportWidth/2)), 0);
+  //Canvas_sceneContext.drawImage(Canvas_foregroundCanvas, Math.floor(-1 * (Zurbo_x - Game_viewportWidth/2)), 0);
+
+  
+  var x =  -1 * Zurbo_x/4 - Game_viewportWidth;
+  Canvas_sceneContext.save();
+  Canvas_sceneContext.translate(x, 0);
+
+  var numStamps = Math.ceil(((Level_width)/Game_viewportWidth)/4) + 1;
+
+  for (var n=0; n<numStamps; n++) {
+    Canvas_sceneContext.translate(Game_viewportWidth, 0);
+    Canvas_sceneContext.drawImage(Canvas_backgroundCanvas, 0, 0);
+  }
+
+  Canvas_sceneContext.restore();
+
+  Level_renderGrids(Zurbo_x);
 };
 
 var Level_getRandomColor = function(colors) {
@@ -147,24 +159,50 @@ var Level_renderBottomShadow = function() {
   Canvas_blockSpriteContext.fillRect(0, 80, 100, 100);
 };
 
-var Level_renderGrids = function() {
-  Level_renderGrid(1, Canvas_foregroundContext);
-  Level_renderGrid(2, Canvas_foregroundContext);
+var Level_renderGrids = function(x) {
+  var col = Math.round((x) / 100);
+  var diff = (col * 100) - x;
+
+  //console.log(diff);
+
+  Canvas_sceneContext.save();
+  Canvas_sceneContext.translate(diff - 100, 0);
+  Level_renderGrid(1, Canvas_sceneContext, col);
+  Level_renderGrid(2, Canvas_sceneContext, col);
+
+  Canvas_sceneContext.restore();
 };
 
-var Level_renderGrid = function(gridIndex, context) {
+var Level_renderGrid = function(gridIndex, context, col) {
+  var type;
   var block;
   var blockIndex;
+  var x;
+
+  //console.log(col);
 
   Level_grid[gridIndex].forEach(function(rowBlock, r) {
-    rowBlock.forEach(function(type, c) {
+    x = 0;
+    for (var c = col-8; c<=col+7; c++) {
+      type = rowBlock[c];
       block = Level_blocks[type];
+
       if (block) {
         blockIndex = block.index;
-        //Canvas_blockSpriteContext.save();
-        context.drawImage(Canvas_blockSpriteCanvas, blockIndex*100, 0, 100, 100, c*100, r*100, 100, 100);
-        //Canvas_blockSpriteContext.restore();
+        context.drawImage(Canvas_blockSpriteCanvas, blockIndex*100, 0, 100, 100, x, r*100, 100, 100);
       }
-    });
+
+      x+= 100;
+    }
+
+    // rowBlock.forEach(function(type, c) {
+    //   block = Level_blocks[type];
+    //   if (block) {
+    //     blockIndex = block.index;
+    //     //Canvas_blockSpriteContext.save();
+    //     context.drawImage(Canvas_blockSpriteCanvas, blockIndex*100, 0, 100, 100, c*100, r*100, 100, 100);
+    //     //Canvas_blockSpriteContext.restore();
+    //   }
+    // });
   });
 };
