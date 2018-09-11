@@ -10,16 +10,16 @@ var Game_pixelationVelocity; // pixels / second
 var Game_gravity = 2000; // pixels / second^2
 
 // enums
-var GAME_LOADING         = 'loading';
-var GAME_TITLE           = 'title';
-var GAME_INTRO_1         = 'intro-1';
-var GAME_INTRO_2         = 'intro-2';
-var GAME_INTRO_3         = 'intro-3';
-var GAME_INTRO_4         = 'intro-4';
-var GAME_INSTRUCTIONS    = 'instructions';
-var GAME_PLAYING         = 'playing';
-var GAME_DIED            = 'died';
-var GAME_WON             = 'won';
+var GAME_LOADING         = 0;
+var GAME_TITLE           = 1;
+var GAME_INTRO_1         = 2;
+var GAME_INTRO_2         = 3;
+var GAME_INTRO_3         = 4;
+var GAME_INTRO_4         = 5;
+var GAME_INSTRUCTIONS    = 6;
+var GAME_PLAYING         = 7;
+var GAME_DIED            = 8;
+var GAME_WON             = 9;
 
 var Game_state = GAME_LOADING;
 
@@ -53,7 +53,7 @@ var Game_init = function() {
 
 var Game_onReady = function() {
   Game_setState(GAME_TITLE);
-  console.log('game is ready');
+  //console.log('game is ready');
 
 };
 
@@ -141,36 +141,45 @@ var Game_listen = function() {
   document.addEventListener('keydown', function(evt) {
     var keycode = ((evt.which) || (evt.keyCode));
 
-    switch (keycode) {
-      // enter rkey
-      case 13:
-        if (Game_state === GAME_TITLE) {
-          Game_setState(GAME_INTRO_1);
-        }
-        else if (Game_state === GAME_INTRO_1) {
-          Game_setState(GAME_INTRO_2);
-        }
-        else if (Game_state === GAME_INTRO_2) {
-          Game_setState(GAME_INTRO_3);
-        }
-        else if (Game_state === GAME_INTRO_3) {
-          Game_setState(GAME_INTRO_4);
-        }
-        else if (Game_state === GAME_INTRO_4) {
-          Game_setState(GAME_INSTRUCTIONS);
-        }
-        else if (Game_state === GAME_INSTRUCTIONS) {
-          Game_setState(GAME_PLAYING);
-        }
-        else if (Game_state === GAME_DIED) {
-          Game_setState(GAME_INTRO_1);
-        }
-        else if (Game_state === GAME_WON) {
-          Game_setState(GAME_INTRO_1);
-        }
-        break;
-
+    if (keycode === 13) {
+      if (Game_state > GAME_PLAYING) {
+        Game_setState(GAME_INTRO_1);
+      }
+      else {
+        Game_setState(Game_state+1);
+      }
     }
+
+    // switch (keycode) {
+    //   // enter rkey
+    //   case 13:
+    //     if (Game_state === GAME_TITLE) {
+    //       Game_setState(GAME_INTRO_1);
+    //     }
+    //     else if (Game_state === GAME_INTRO_1) {
+    //       Game_setState(GAME_INTRO_2);
+    //     }
+    //     else if (Game_state === GAME_INTRO_2) {
+    //       Game_setState(GAME_INTRO_3);
+    //     }
+    //     else if (Game_state === GAME_INTRO_3) {
+    //       Game_setState(GAME_INTRO_4);
+    //     }
+    //     else if (Game_state === GAME_INTRO_4) {
+    //       Game_setState(GAME_INSTRUCTIONS);
+    //     }
+    //     else if (Game_state === GAME_INSTRUCTIONS) {
+    //       Game_setState(GAME_PLAYING);
+    //     }
+    //     else if (Game_state === GAME_DIED) {
+    //       Game_setState(GAME_INTRO_1);
+    //     }
+    //     else if (Game_state === GAME_WON) {
+    //       Game_setState(GAME_INTRO_1);
+    //     }
+    //     break;
+
+    // }
   });
 };
 

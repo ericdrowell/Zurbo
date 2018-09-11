@@ -70,10 +70,6 @@ var Zurbo_listen = function() {
           Zurbo_faceDirection = -1;
         }
         break;
-      case 87:
-        // w
-
-        break;
       case 68:
         // d
         Zurbo_dDown = true;
@@ -82,10 +78,6 @@ var Zurbo_listen = function() {
           Zurbo_direction = 1;
           Zurbo_faceDirection = 1;
         }
-        break;
-      case 83: 
-        // s
-
         break;
       case 32:
         // space
@@ -102,20 +94,13 @@ var Zurbo_listen = function() {
   document.addEventListener('keyup', function(evt) {
     var keycode = ((evt.which) || (evt.keyCode));
 
-    
     switch (keycode) {
       case 65:
         // a
         Zurbo_aDown = false;
-
         if (Zurbo_life > 0 && !Zurbo_aDown && !Zurbo_dDown) {
           Zurbo_direction = 0;
         }
-        
-        break;
-      case 87:
-        // w
-
         break;
       case 68:
         // d
@@ -123,16 +108,6 @@ var Zurbo_listen = function() {
         if (Zurbo_life > 0 && !Zurbo_aDown && !Zurbo_dDown) {
           Zurbo_direction = 0;
         }
-        
-        break;
-      case 83: 
-        // s
-
-        break;
-      case 32:
-        // space
-
-
         break;
     }
     

@@ -194,15 +194,5 @@ var Level_renderGrid = function(gridIndex, context, col) {
 
       x+= 100;
     }
-
-    // rowBlock.forEach(function(type, c) {
-    //   block = Level_blocks[type];
-    //   if (block) {
-    //     blockIndex = block.index;
-    //     //Canvas_blockSpriteContext.save();
-    //     context.drawImage(Canvas_blockSpriteCanvas, blockIndex*100, 0, 100, 100, c*100, r*100, 100, 100);
-    //     //Canvas_blockSpriteContext.restore();
-    //   }
-    // });
   });
 };

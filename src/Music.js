@@ -318,7 +318,7 @@ var Music_init = function() {
   var player = new CPlayer();
   player.init(song);
 
-  console.log('initializing music...');
+  //console.log('initializing music...');
 
   var interval = setInterval(function() {
     var done = player.generate() >= 1;
@@ -333,7 +333,7 @@ var Music_init = function() {
       Music_audio.loop = true;
       //Music_audio.autoplay = true;
 
-      console.log('music is ready');
+      //console.log('music is ready');
       Music_ready = true;
     }
   }, 17);

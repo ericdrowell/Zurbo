@@ -9,8 +9,8 @@ var Mob_bossHitDistance = 1200;
 var Mob_types = {
   // axe guy
   A: {
-    spriteVelocity: 6, // sprites / second
-    runSpeed: 200, // pixels / second,
+    sv: 6, // sprite velocity sprites / second
+    rs: 200, // run speed pixels / second,
     spriteY: 26,
     spriteHitY: 26 + 52,
     spriteDeadY: 26 + 52 + 52,
@@ -19,8 +19,8 @@ var Mob_types = {
   },
   // monster
   M: {
-    spriteVelocity: 6, // sprites / second
-    runSpeed: 100, // pixels / second,
+    sv: 6, // sprites / second
+    rs: 100, // pixels / second,
     spriteY: 26,
     spriteHitY: 26 + 52,
     spriteDeadY: 26 + 52 + 52,
@@ -29,8 +29,8 @@ var Mob_types = {
   },
   // boss
   B: {
-    spriteVelocity: 6, // sprites / second
-    runSpeed: 300, // pixels / second 
+    sv: 6, // sprites / second
+    rs: 300, // pixels / second 
     spriteY: 26*4,
     spriteHitY: 26*2,
     spriteDeadY: 26*4,
@@ -172,8 +172,8 @@ var Mob_purgeDeadMobs = function() {
 
 var Mob_updatePosition = function(timeDiff) {
   Mob_mobs.forEach(function(mob) {
-    var runSpeed = Mob_types[mob.type].runSpeed;
-    var dist = runSpeed * timeDiff;
+    var rs = Mob_types[mob.type].rs;
+    var dist = rs * timeDiff;
     var startX = mob.x;
     var lastX;
     var newX;
@@ -225,7 +225,7 @@ var Mob_updatePosition = function(timeDiff) {
 var Mob_updateSpriteIndex = function(timeDiff) {
   Mob_mobs.forEach(function(mob) {
     var typeObj = Mob_types[mob.type];
-    mob.spriteIndex += typeObj.spriteVelocity * timeDiff;
+    mob.spriteIndex += typeObj.sv * timeDiff;
   });
 
   
