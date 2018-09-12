@@ -26,7 +26,7 @@ var Mob_types = {
     spriteHitY: 26 + 52,
     spriteDeadY: 26 + 52 + 52,
     spriteStartIndex: 4,
-    startLife: 20,
+    startLife: 15,
     minTimeBetweenLasers: 2,
     hitDistance: 1200,
     projectileSpeed: 400,

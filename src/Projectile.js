@@ -2,6 +2,8 @@ var Projectile_projectiles = [];
 var Projectile_canvasSize = 100;
 
 var Projectile_render = function() {
+  Canvas_clearTemp();
+  
   Projectile_projectiles.forEach(function(projectile) {
     var x = projectile.startX - Zurbo_x + Game_viewportWidth/2;
     var y = projectile.startY;
@@ -13,6 +15,8 @@ var Projectile_render = function() {
     var projectileY = Math.sin(angle) * 30;
 
     var type = projectile.type;
+
+    
 
     
     Canvas_projectileContext.clearRect(0, 0, Projectile_canvasSize, Projectile_canvasSize);
@@ -45,15 +49,19 @@ var Projectile_render = function() {
 
     }
 
-    Canvas_pixelate(Canvas_projectileCanvas, Canvas_projectileContext, 3);
+    
 
-    Canvas_sceneContext.save();
-    Canvas_sceneContext.beginPath();
-    Canvas_sceneContext.translate(endX, endY);
-    Canvas_sceneContext.translate(Projectile_canvasSize/-2, Projectile_canvasSize/-2);
-    Canvas_sceneContext.drawImage(Canvas_projectileCanvas, 0, 0);
-    Canvas_sceneContext.restore();
+    Canvas_tempContext.save();
+    Canvas_tempContext.beginPath();
+    Canvas_tempContext.translate(endX, endY);
+    Canvas_tempContext.translate(Projectile_canvasSize/-2, Projectile_canvasSize/-2);
+    Canvas_tempContext.drawImage(Canvas_projectileCanvas, 0, 0);
+    Canvas_tempContext.restore();
   });
+
+  Canvas_pixelate(Canvas_tempCanvas, Canvas_tempContext, 3);
+
+  Canvas_sceneContext.drawImage(Canvas_tempCanvas, 0, 0, Game_viewportWidth, Game_viewportHeight, 0, 0, Game_viewportWidth, Game_viewportHeight);
 };
 
 var Projectile_fire = function(startX, startY, endX, endY, color, speed, type) {
@@ -106,7 +114,7 @@ var Projectile_update = function(timeDiff) {
       Mob_hit(mob);
     }
     // if hit zurbo
-     if (projectile.color !== 'blue' && x > Zurbo_x - 32 && x < Zurbo_x + 32 && y > Zurbo_y - 54 - 54 && y < Zurbo_y -54 + 54) {
+    else if (projectile.color !== 'blue' && x > Zurbo_x - 32 && x < Zurbo_x + 32 && y > Zurbo_y - 54 - 54 && y < Zurbo_y -54 + 54) {
       Zurbo_hit();
     }
     // if hit a block
@@ -119,4 +127,5 @@ var Projectile_update = function(timeDiff) {
       object.splice(index, 1);
     }
   });
+
 };

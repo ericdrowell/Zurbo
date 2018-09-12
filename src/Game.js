@@ -197,11 +197,10 @@ var Game_setupDom = function() {
 };
 
 var Game_loop = function() {
-  
-
+  // make sure requestAnimationFrame is called first in the loop so that timings are correct
+  requestAnimationFrame(Game_loop);
   Game_update();
   Game_render();
-  requestAnimationFrame(Game_loop);
 };
 
 var Game_render = function() {
