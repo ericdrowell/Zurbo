@@ -75,7 +75,7 @@ var Level_getRandomColor = function(colors) {
 };
 
 var Level_renderStones = function() {
-  Canvas_tempContext.clearRect(0, 0, Game_viewportWidth, Game_viewportHeight);
+  Canvas_clearTemp();
 
   // background fill
   Canvas_blockSpriteContext.beginPath();
@@ -83,54 +83,37 @@ var Level_renderStones = function() {
   Canvas_blockSpriteContext.fillRect(0, 0, 100, 100);
 
   // stones
-  Level_renderStone(30, 30, 15, 1, 0.5);
-  Level_renderStone(60, 60, 20, 1, 0.5);
-  Level_renderStone(20, 50, 10, 1, 0.5);
-  Level_renderStone(85, 35, 15, 1, 0.5);
-  Level_renderStone(20, 80, 15, 1, 0.5);
-  Level_renderStone(70, 15, 12, 1, 0.5);
-  Level_renderStone(80, 80, 13, 1, 0.5);
-  Level_renderStone(15, 15, 8, 1, 0.5);
-  Level_renderStone(55, 90, 8, 1, 0.5);
-  Level_renderStone(40, 10, 8, 1, 0.5);
+  Level_renderStone(30, 30, 15);
+  Level_renderStone(60, 60, 20);
+  Level_renderStone(20, 50, 10);
+  Level_renderStone(85, 35, 15);
+  Level_renderStone(20, 80, 15);
+  Level_renderStone(70, 15, 12);
+  Level_renderStone(80, 80, 13);
+  Level_renderStone(15, 15, 8);
+  Level_renderStone(55, 90, 8);
+  Level_renderStone(40, 10, 8);
 
   Canvas_pixelate(Canvas_tempCanvas, Canvas_tempContext, 3);
-
-
 
   Canvas_blockSpriteContext.drawImage(Canvas_tempCanvas, 0, 0, 100, 100, 0, 0, 100, 100);
 };
 
-var Level_renderStone = function(x, y, radius, scaleX, scaleY) {
-  Canvas_tempContext.save();
-  Canvas_tempContext.beginPath();
-  Canvas_tempContext.translate(x, y+2);
-  Canvas_tempContext.scale(scaleX, scaleY);
-  Canvas_tempContext.arc(0, 0, radius, 0, Math.PI*2, false);
-  Canvas_tempContext.fillStyle = '#111'; // dark gray
-  Canvas_tempContext.fill();
-  Canvas_tempContext.restore();
-
-
-  Canvas_tempContext.save();
-  Canvas_tempContext.beginPath();
-  Canvas_tempContext.translate(x, y-2);
-  Canvas_tempContext.scale(scaleX, scaleY);
-  Canvas_tempContext.arc(0, 0, radius, 0, Math.PI*2, false);
-  Canvas_tempContext.fillStyle = '#bdbdb3'; // light gray
-  Canvas_tempContext.fill();
-  Canvas_tempContext.restore();
-
-  Canvas_tempContext.save();
+var Level_renderOval = function(x, y, radius, color) {
   Canvas_tempContext.save();
   Canvas_tempContext.beginPath();
   Canvas_tempContext.translate(x, y);
-  Canvas_tempContext.scale(scaleX, scaleY);
+  Canvas_tempContext.scale(1, 0.5);
   Canvas_tempContext.arc(0, 0, radius, 0, Math.PI*2, false);
-  Canvas_tempContext.fillStyle = '#828277'; // medium gray
+  Canvas_tempContext.fillStyle = color; // dark gray
   Canvas_tempContext.fill();
-
   Canvas_tempContext.restore();
+};
+
+var Level_renderStone = function(x, y, radius) {
+  Level_renderOval(x, y+2, radius, '#111');
+  Level_renderOval(x, y-2, radius, '#bdbdb3');
+  Level_renderOval(x, y, radius, '#828277');
 };
 
 var Level_renderParticleBlock = function(colors, pixelSize) {

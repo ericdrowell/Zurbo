@@ -45,6 +45,10 @@ var Canvas_init = function() {
   //Canvas_debug(Canvas_blockSpriteCanvas);
 };
 
+var Canvas_clearTemp = function() {
+  Canvas_tempContext.clearRect(0, 0, Game_viewportWidth, Game_viewportHeight);
+};
+
 var Canvas_debug = function(canvas) {
   canvas.style.position = 'fixed';
   canvas.style.border = '2px solid red';
