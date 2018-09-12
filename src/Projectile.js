@@ -79,7 +79,15 @@ var Projectile_fire = function(startX, startY, endX, endY, color, speed, type) {
     speed: speed,
     type: type
   });
-  SoundEffects_play('laser');
+
+  if (type === 'laser') {
+    SoundEffects_play('laser');
+  }
+  // ball
+  else {
+    SoundEffects_play('fire-ball');
+  } 
+  
 };
 
 var Projectile_update = function(timeDiff) {

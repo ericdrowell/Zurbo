@@ -30,7 +30,7 @@ var Canvas_init = function() {
   Canvas_staticSpriteCanvas = Canvas_createCanvas(256, 26*7);
   Canvas_staticSpriteContext = Canvas_getContext(Canvas_staticSpriteCanvas);
 
-  Canvas_blockSpriteCanvas = Canvas_createCanvas(1000, 100);
+  Canvas_blockSpriteCanvas = Canvas_createCanvas(2000, 100);
   Canvas_blockSpriteContext = Canvas_getContext(Canvas_blockSpriteCanvas);
 
   Canvas_tempCanvas = Canvas_createCanvas(Game_viewportWidth, Game_viewportHeight);

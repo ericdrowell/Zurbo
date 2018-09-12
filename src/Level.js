@@ -74,6 +74,65 @@ var Level_getRandomColor = function(colors) {
   return colors[Math.round(Math.random()*(colors.length-1))];
 };
 
+var Level_renderStones = function() {
+  Canvas_tempContext.clearRect(0, 0, Game_viewportWidth, Game_viewportHeight);
+
+  // background fill
+  Canvas_blockSpriteContext.beginPath();
+  Canvas_blockSpriteContext.fillStyle = '#64645c';
+  Canvas_blockSpriteContext.fillRect(0, 0, 100, 100);
+
+  // stones
+  Level_renderStone(30, 30, 15, 1, 0.5);
+  Level_renderStone(60, 60, 20, 1, 0.5);
+  Level_renderStone(20, 50, 10, 1, 0.5);
+  Level_renderStone(85, 35, 15, 1, 0.5);
+  Level_renderStone(20, 80, 15, 1, 0.5);
+  Level_renderStone(70, 15, 12, 1, 0.5);
+  Level_renderStone(80, 80, 13, 1, 0.5);
+  Level_renderStone(15, 15, 8, 1, 0.5);
+  Level_renderStone(55, 90, 8, 1, 0.5);
+  Level_renderStone(40, 10, 8, 1, 0.5);
+
+  Canvas_pixelate(Canvas_tempCanvas, Canvas_tempContext, 3);
+
+
+
+  Canvas_blockSpriteContext.drawImage(Canvas_tempCanvas, 0, 0, 100, 100, 0, 0, 100, 100);
+};
+
+var Level_renderStone = function(x, y, radius, scaleX, scaleY) {
+  Canvas_tempContext.save();
+  Canvas_tempContext.beginPath();
+  Canvas_tempContext.translate(x, y+2);
+  Canvas_tempContext.scale(scaleX, scaleY);
+  Canvas_tempContext.arc(0, 0, radius, 0, Math.PI*2, false);
+  Canvas_tempContext.fillStyle = '#111'; // dark gray
+  Canvas_tempContext.fill();
+  Canvas_tempContext.restore();
+
+
+  Canvas_tempContext.save();
+  Canvas_tempContext.beginPath();
+  Canvas_tempContext.translate(x, y-2);
+  Canvas_tempContext.scale(scaleX, scaleY);
+  Canvas_tempContext.arc(0, 0, radius, 0, Math.PI*2, false);
+  Canvas_tempContext.fillStyle = '#bdbdb3'; // light gray
+  Canvas_tempContext.fill();
+  Canvas_tempContext.restore();
+
+  Canvas_tempContext.save();
+  Canvas_tempContext.save();
+  Canvas_tempContext.beginPath();
+  Canvas_tempContext.translate(x, y);
+  Canvas_tempContext.scale(scaleX, scaleY);
+  Canvas_tempContext.arc(0, 0, radius, 0, Math.PI*2, false);
+  Canvas_tempContext.fillStyle = '#828277'; // medium gray
+  Canvas_tempContext.fill();
+
+  Canvas_tempContext.restore();
+};
+
 var Level_renderParticleBlock = function(colors, pixelSize) {
   var color;
   for (var x=0; x<100/pixelSize; x++) {

@@ -257,7 +257,7 @@ var Game_setState = function(state) {
   }
   else if (state === GAME_INTRO_1) {
     Game_setPixelationForText();
-    Music_play();
+    //Music_play();
   }
   else if (state === GAME_DIED) {
     Game_setPixelationForText();
