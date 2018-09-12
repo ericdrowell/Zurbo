@@ -3,6 +3,9 @@ var Level_blocks;
 var Level_renderBackground;
 var Level_levels = [];
 
+var Level_birds = [];
+var Level_birdWingFreq = 15;
+
 var Level_init = function() {
   Level_grid = Level1_grid;
   Level_blocks = Level1_blocks;
@@ -11,11 +14,31 @@ var Level_init = function() {
   Level_renderBlocks();
 };
 
+var Level_resetBirds = function() {
+  var xs = [-200, -250, -275, 0];
+  var ys = [300, 350, 310, 200];
+  Level_birds = [];
+  for (var n=0; n<4; n++) {
+    Level_birds.push({
+      x: xs[n] + Zurbo_startX,
+      y: ys[n],
+      yVelocity: Math.random() * 10,
+      wingScaleOffset: Math.random(), // seconds
+      wingScale: (Math.random()-0.5)*2, // between -1 and 1
+      speed: (Math.random() * 20) + 40
+    });
+  }
+};
+
 var Level_getPositionFromRowCol = function(row, col) {
   return {
     x: col * 100 + 50,
     y: row * 100 + 100
   };
+};
+
+var Level_update = function(timeDiff) {
+  Level_updateBirds(timeDiff);
 };
 
 var Level_getBlockType = function(x, y, gridRow) {
@@ -58,9 +81,56 @@ var Level_render = function() {
 
   Canvas_sceneContext.restore();
 
+  Level_renderBirds();
+
   Level_renderGrids(Zurbo_x);
 
   Level_renderEvilEffect();
+
+};
+
+var Level_renderBirds = function(timeDiff) {
+  Canvas_clearTemp();
+
+  
+  Level_birds.forEach(function(bird) {
+    Level_renderBird(bird);
+  });
+
+
+  Canvas_pixelate(Canvas_tempCanvas, Canvas_tempContext, 3);
+
+  Canvas_sceneContext.drawImage(Canvas_tempCanvas, 0, 0, Game_viewportWidth, Game_viewportHeight, 0, 0, Game_viewportWidth, Game_viewportHeight);
+};
+
+var Level_renderBird = function(bird) {
+  Canvas_tempContext.fillStyle = '#0f2b55';
+  Canvas_tempContext.save();
+  Canvas_tempContext.beginPath();
+  Canvas_tempContext.translate(bird.x - Zurbo_x/4, bird.y);
+  Canvas_tempContext.rotate(-1 * Math.PI*0.05);
+
+  // body
+  Canvas_tempContext.fillRect(0, -1, 13, 3);
+
+  Canvas_tempContext.scale(1, bird.wingScale);
+  Canvas_tempContext.moveTo(0, 0);
+  Canvas_tempContext.lineTo(5, 10);
+  Canvas_tempContext.lineTo(10, 0);
+  Canvas_tempContext.fill();
+
+  
+
+  Canvas_tempContext.restore();
+};
+
+var Level_updateBirds = function(timeDiff) {
+  var time = new Date().getTime()/1000; // seconds
+  Level_birds.forEach(function(bird) {
+    bird.x += timeDiff * bird.speed;
+    bird.y += -1 * timeDiff * bird.yVelocity;
+    bird.wingScale = Math.sin((time + bird.wingScaleOffset) * Level_birdWingFreq);
+  });
 };
 
 var Level_renderEvilEffect = function() {

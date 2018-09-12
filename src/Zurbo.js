@@ -10,7 +10,7 @@ var Zurbo_runSpeed = 500; // pixels / second
 var Zurbo_direction = 0;
 var Zurbo_jumpVelocity = -835;
 var Zurbo_spriteVelocity = 6; // sprites / second
-var Zurbo_startLife = 5;
+var Zurbo_startLife = 7;
 
 // Zurbo can jump once off the ground, and then in the air!
 var Zurbo_jumpsLeft = 0;
@@ -21,6 +21,7 @@ var Zurbo_lastHitTime = 0; // seconds
 var Zurbo_isHit = false;
 var Zurbo_spriteIndex = 0;
 var Zurbo_projectileSpeed = 1000;
+var Zurbo_startX = 1200;
 
 var Zurbo_init = function() {
   Zurbo_listen();
@@ -28,7 +29,7 @@ var Zurbo_init = function() {
 
 var Zurbo_reset = function() {
   Zurbo_y = -200;
-  Zurbo_x = 1200; // 6873
+  Zurbo_x = Zurbo_startX;
   Zurbo_life = Zurbo_startLife;
   Zurbo_faceDirection = 1;
   Zurbo_verticalVelocity = 0;

@@ -235,6 +235,7 @@ var Game_update = function() {
   // only update frame if we are above 10 frames per second, 
   if (timeDiff < 0.1) {
     if (Game_state === GAME_PLAYING) {
+      Level_update(timeDiff);
       Mob_update(timeDiff);
       Zurbo_update(timeDiff);
       Projectile_update(timeDiff);
@@ -253,6 +254,7 @@ var Game_setState = function(state) {
     Game_pixelationVelocity = 48;
     Zurbo_reset();
     Mob_reset();
+    Level_resetBirds();
     SoundEffects_play('start'); 
   }
   else if (state === GAME_INTRO_1) {
